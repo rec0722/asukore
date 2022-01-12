@@ -79,7 +79,21 @@ class MstDept extends Model
    * [check Lists]------------------------------------------
    */
   /**
-   * Get the depture Lists
+   * Get the depture Lists - create
+   */
+  public static function deptCreateCheckList()
+  {
+    $depts = MstDept::all();
+    $deptList = array();
+    foreach ($depts as $dept) {
+      $var = array($dept->id => $dept->name);
+      $deptList = $deptList + $var;
+    }
+    return $deptList;
+  }
+
+  /**
+   * Get the depture Lists - edit
    */
   public static function deptCheckList($user)
   {

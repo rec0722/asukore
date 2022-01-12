@@ -13,6 +13,10 @@ html body {
   margin: 0;
   background-color: #F9F9F9 !important;
 }
+html body .container {
+  width: 90% !important;
+  max-width: 1440px;
+}
 html body .container2 {
   justify-content: center;
   align-items: center;
@@ -90,6 +94,10 @@ html body .container2 {
     height: 64px;
   }
 
+  .flex .col-md-1 {
+    flex: 0 0 8.333333%;
+    width: 8.333333%;
+  }
   .flex .col-md-2 {
     flex: 0 0 16.666667%;
     width: 16.666667%;
@@ -125,6 +133,9 @@ html body .container2 {
 }
 .content .table {
   margin-bottom: 4em;
+}
+.content .display-none {
+  display: none;
 }
 
 .content-box {
@@ -175,12 +186,13 @@ html body .container2 {
   flex-wrap: wrap;
   width: 100%;
 }
-
-@media screen and (min-width: 768px) {
-  .report .report-table .flex {
-    flex-wrap: nowrap;
-  }
+.report .report-table .flex .row {
+  margin-bottom: 0;
 }
+.report .report-table .flex .row .s2 {
+  margin-top: 15px;
+}
+
 /*--------------------------------------------------------------
 >>> Login
 --------------------------------------------------------------*/

@@ -3,8 +3,8 @@
  * report
 
 =================================================================== */
-
 $(function() {
+    // 時間報告の行追加
     $(document).on('click', '.addItem', function(e) {
         e.preventDefault();
         let itemV = document.getElementById('getItemNum').value; // 個数を取得
@@ -29,8 +29,8 @@ $(function() {
         itemV++;
         document.getElementById('getItemNum').value = itemV;
     });
-
-    $(document).on('click', '.deleteItem', function() {
+    // 時間報告の行削除
+    $(document).on('click', '.deleteItem', function(obj) {
         let itemV = document.getElementById('getItemNum').value; // 個数を取得
         if (itemV !== '1') {
             const id = $(this).attr('id'); // 個数を取得
@@ -43,6 +43,65 @@ $(function() {
     });
 });
 
+/* ===================================================================
+
+ * master
+
+=================================================================== */
+$(function() {
+    // 会社選択時、部署変更
+    $(document).on('change', '#select-company', function() {
+        let companyId = document.getElementById('select-company').value; //会社IDを取得
+        if (companyId !== '') {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+            });
+            $.ajax({
+                    //POST通信
+                    type: 'post',
+                    url: '/get_dept',
+                    dataType: 'json',
+                    data: {
+                        company_id: companyId,
+                    },
+                })
+                //通信が成功したとき
+                .done(function(data) {
+                    let dept = document.getElementById('change-dept');
+                    if (dept.hasChildNodes()) {
+                        while (dept.childNodes.length > 0) {
+                            dept.removeChild(dept.firstChild)
+                        }
+                    }
+                    $.each(data, function(index, value) {
+                        let id = value.id;
+                        let name = value.name;
+                        var option = document.createElement('option');
+                        option.value = id;
+                        option.text = name;
+                        dept.appendChild(option);
+                    });
+                })
+                //通信が失敗したとき
+                .fail((error) => {
+                    console.log(error.statusText);
+                })
+        };
+    });
+
+    // 役職の「役員」を選択時、閲覧権限を表示
+    $(document).on('click', '.select-role', function() {
+        let role = $('.select-role:checked').val();
+        let dept = document.getElementById('userDept');
+        if (role === '8') {
+            $(dept).removeClass('display-none');
+        } else {
+            $(dept).addClass('display-none');
+        }
+    });
+});
 
 
 /* ===================================================================
@@ -67,5 +126,10 @@ $(function() {
             weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
             weekdaysAbbrev: ['日', '月', '火', '水', '木', '金', '土']
         }
+    });
+    $('.timepicker').timepicker({
+        autoClose: true,
+        twelveHour: false,
+        options: 'step',
     });
 });

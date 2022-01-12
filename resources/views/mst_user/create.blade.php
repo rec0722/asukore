@@ -26,7 +26,7 @@
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('company_id', '会社名') }}
-      {{ Form::select('company_id', $user['companyList'], null, ['class' => 'browser-default', 'required']) }}
+      {{ Form::select('company_id', $user['companyList'], null, ['class' => 'browser-default', 'id' => 'select-company', 'required']) }}
       <div class="input-field">
         <span class="helper-text">※必須項目です</span>
         @error('company_id')
@@ -38,7 +38,7 @@
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('dept_id', '所属') }}
-      {{ Form::select('dept_id', $user['deptSelect'], null, ['class' => 'browser-default']) }}
+      {{ Form::select('dept_id', $user['deptSelect'], null, ['class' => 'browser-default', 'id' => 'change-dept']) }}
       <div class="input-field">
         <span class="helper-text">※必須項目です</span>
         @error('dept_id')
@@ -54,15 +54,16 @@
         @foreach ($user['roleList'] as $key => $val)
         <p>
           <label>
-            {{ Form::radio('role', $key, ['class' => 'with-gap']) }}
+            {{ Form::radio('role', $key, null, ['class' => 'with-gap select-role', 'id' => 'role' . $key]) }}
             <span>{{ $val }}</span>
           </label>
         </p>
         @endforeach
+        <span class="helper-text">※必須項目です</span>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div id="userDept" class="row display-none">
     <div class="col s12 l6">
       {{ Form::label('dept', '閲覧権限') }}
       <div class="input-field">

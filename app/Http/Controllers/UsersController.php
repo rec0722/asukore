@@ -53,7 +53,8 @@ class UsersController extends Controller
   {
     $user['companyList'] = MstCompany::companyList();
     $user['deptSelect'] = MstDept::deptSelectList();
-    $user['deptCheck'] = MstDept::deptCheckList();
+    $user['deptCheck'] = MstDept::deptCreateCheckList($user);
+    $user['role'] = '0';
     $user['roleList'] = User::roleList();
 
     return view(
@@ -256,5 +257,17 @@ class UsersController extends Controller
         'message' => 'ユーザを削除しました',
         'status' => 'danger'
       ]);
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function getDept(Request $request)
+  {
+    $depts = MstDept::where('company_id', $request->company_id)->get();
+    return $depts;
   }
 }

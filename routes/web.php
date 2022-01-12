@@ -46,3 +46,4 @@ Route::post('/report/search/', [ReportsController::class, 'search'])->middleware
 Route::resource('mst_company', MstCompaniesController::class)->middleware('auth:web');
 Route::resource('mst_dept', MstDeptsController::class)->middleware('auth:web');
 Route::resource('mst_user', UsersController::class)->middleware('auth:web');
+Route::post('/get_dept', [UsersController::class, 'getDept'])->middleware('auth:web')->name('mst_user.dept');

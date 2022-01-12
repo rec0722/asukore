@@ -45,26 +45,26 @@
 
         @for ($i = 0; $i < $item['rows']; $i++)
         <tr class="flex">
-          <td class="col-12 col-md-6 id flex align-items-center">
+          <td class="col-6 col-md-2 row id">
             {{ Form::hidden('action_list[' . $i . '][id]', null) }}
-            <div class="input1">
-              {{ Form::time('action_list[' . $i . '][time1]', null, ['class' => 'timepicker']) }}
-            </div>
-            <label>〜</label>
-            <div class="input2">
-              {{ Form::time('action_list[' . $i . '][time2]', null, ['class' => 'timepicker']) }}
-            </div>
+            <span class="col s5 input1">
+              {{ Form::text('action_list[' . $i . '][time1]', null, ['class' => 'timepicker', 'placeholder' => '10:00']) }}
+            </span>
+            <label class="col s2">〜</label>
+            <span class="col s5 input2">
+              {{ Form::text('action_list[' . $i . '][time2]', null, ['class' => 'timepicker', 'placeholder' => '11:00']) }}
+            </span>
           </td>
-          <td class="col-12 col-md-6 input3">
+          <td class="col-6 col-md-2 input3">
             {{ Form::text('action_list[' . $i . '][customer]', null, ['class' => 'validate', 'placeholder' => 'お客様']) }}
           </td>
-          <td class="col-12 col-md-12 input4">
-            {{ Form::text('action_list[' . $i . '][action]', null, ['class' => 'validate', 'placeholder' => '作業内容']) }}
+          <td class="col-12 col-md-4 input4">
+            {{ Form::textarea('action_list[' . $i . '][action]', null, ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => '作業内容']) }}
           </td>
-          <td class="col-12 col-md-12 input5">
-            {{ Form::text('action_list[' . $i . '][approach]', null, ['class' => 'validate', 'placeholder' => '結果']) }}
+          <td class="col-12 col-md-3 input5">
+            {{ Form::textarea('action_list[' . $i . '][approach]', null, ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => '結果']) }}
           </td>
-          <td class="col-12 col-md-12 button center-align">
+          <td class="col-12 col-md-1 button center-align">
             {{ Form::button('<i class="material-icons">remove</i>', ['class' => 'waves-effect waves-light btn btn-floating deleteItem', 'id' => $i, 'type' => 'button']) }}
             {{ Form::hidden('action_list[' . $i . '][delete_flg]', 0, ['id' => 'flg0']) }}
           </td>
@@ -76,7 +76,7 @@
         <tr>
           <td class="right-align" colspan="5">
             {{ Form::button('<i class="material-icons">add</i>', ['class' => 'waves-effect waves-light btn btn-floating addItem', 'type' => 'button']) }}
-            {{ Form::hidden('itemNum', 1, ['id' => 'getItemNum']) }}
+            {{ Form::hidden('itemNum', $i, ['id' => 'getItemNum']) }}
           </td>
         </tr>
       </tfoot>

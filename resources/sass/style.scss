@@ -21,6 +21,10 @@ html {
         height: 100%;
         margin: 0;
         background-color: $backColor !important;
+        .container {
+            width: 90% !important;
+            max-width: 1440px;
+        }
         .container2 {
             justify-content: center;
             align-items: center;
@@ -117,6 +121,12 @@ html {
         }
     }
     .flex {
+        .col-md-1 {
+            -webkit-flex: 0 0 8.333333%;
+            -ms-flex: 0 0 8.333333%;
+            flex: 0 0 8.333333%;
+            width: 8.333333%;
+        }
         .col-md-2 {
             -webkit-flex: 0 0 16.666667%;
             -ms-flex: 0 0 16.666667%;
@@ -165,6 +175,9 @@ html {
     }
     .table {
         margin-bottom: 4em;
+    }
+    .display-none {
+        display: none;
     }
 }
 
@@ -217,19 +230,17 @@ html {
         .flex {
             flex-wrap: wrap;
             width: 100%;
-        }
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .report {
-        .report-table {
-            .flex {
-                flex-wrap: nowrap;
+            .row {
+                margin-bottom: 0;
+                .s2 {
+                    margin-top: 15px;
+                }
             }
         }
     }
 }
+
+@media screen and (min-width: 768px) {}
 
 
 /*--------------------------------------------------------------
