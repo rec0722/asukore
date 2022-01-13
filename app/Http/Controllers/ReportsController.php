@@ -54,7 +54,7 @@ class ReportsController extends Controller
   {
     // 権限別のselectを取得
     $user = Auth::user();
-    if ($user['role'] > 7) {
+    if ($user['role'] === 8) {
       $search['deptSelect'] = MstDept::deptSelectList();
       $search['userSelect'] = User::userSelectList();
     } else {
@@ -63,12 +63,9 @@ class ReportsController extends Controller
     }
     // レポート一覧取得
     if ($user['role'] === 8) {
-      $reports = Report::all();
-      /*
-      $reports = Report::where('dept_id', function ($query) use ($user) {
-        $query->select('dept_id')->from('user_depts')->where('user_id', $user['id']);
-      })->orderBy('report_date', 'desc')->get();
-      */
+      $depts = User::getCompanyArray($user['id']);
+      //$reports = Report::orderByRaw('report_date desc, dept_id desc')->get();
+      $reports = Report::whereIn('dept_id', $depts)->orderBy('report_date', 'desc')->get();
     } elseif ($user['role'] === 4) {
       $reports = Report::where('dept_id', $user['dept_id'])->orderByRaw('report_date desc, dept_id desc')->get();
     } else {

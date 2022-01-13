@@ -217,18 +217,18 @@ class UsersController extends Controller
         // ユーザ登録
         $user = User::findOrFail($id);
         $user->fill($data)->save();
-         // 閲覧権限登録
-         $depts = $request->dept;
-         if (!empty($depts)) {
-           foreach ($depts as $dept) {
-             $data = [
-               'user_id' => $id,
-               'dept_id' => $dept
-             ];
-             UserDept::where('user_id', $id)->delete();
-             UserDept::create($data);
-           }
-         }
+        // 閲覧権限登録
+        $depts = $request->dept;
+        if (!empty($depts)) {
+          UserDept::where('user_id', $id)->delete();
+          foreach ($depts as $dept) {
+            $data = [
+              'user_id' => $id,
+              'dept_id' => $dept
+            ];
+            UserDept::create($data);
+          }
+        }
       }, 2);
     } catch (Throwable $e) {
       Log::error($e);

@@ -61,15 +61,15 @@
       <div>
         <div class="col s6">
           @if (!is_null($report['prev']))
-          <a href="{{ route('report.show', $report->prev) }}" class="waves-effect waves-teal btn-flat">
-            <i class="material-icons">chevron_left</i>前の日
+          <a href="{{ route('report.show', $report->prev) }}" class="waves-effect waves-teal btn grey">
+            <i class="material-icons left">chevron_left</i>前の日
           </a>
           @endif
         </div>
         <div class="col s6 right-align">
           @if (!is_null($report['next']))
-          <a href="{{ route('report.show', $report->next) }}" class="waves-effect waves-teal btn-flat">
-            次の日<i class="material-icons">chevron_right</i>
+          <a href="{{ route('report.show', $report->next) }}" class="waves-effect waves-teal btn grey">
+            次の日<i class="material-icons right">chevron_right</i>
           </a>
           @endif
         </div>

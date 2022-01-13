@@ -140,6 +140,22 @@ class User extends Authenticatable
   }
 
   /**
+   * [Array]------------------------------------------
+   */
+  /**
+   * Get the company Lists
+   */
+  public static function getCompanyArray($id)
+  {
+    $depts = UserDept::where('user_id', $id)->get()->toArray();
+    $deptList = [];
+    foreach ($depts as $item) {
+      $deptList[] = $item['dept_id'];
+    }
+    return $deptList;
+  }
+
+  /**
    * [Index Value]------------------------------------------
    */
   /**
