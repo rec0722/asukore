@@ -110,6 +110,7 @@ $(function() {
 
 =================================================================== */
 $(function() {
+    $('select').formSelect();
     $('.dropdown-trigger').dropdown({
         coverTrigger: false,
     });

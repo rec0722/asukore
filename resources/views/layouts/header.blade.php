@@ -21,6 +21,8 @@
             <li><a href="{{ route('mst_company.index') }}">会社情報</a></li>
             <li class="divider" tabindex="-1"></li>
             <li><a href="{{ route('mst_dept.index') }}">部署情報</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('mst_group.index') }}">グループ情報</a></li>
           </ul><!-- /.Dropdown Structure -->
         </li>
         @endif
@@ -62,6 +64,8 @@
           <li><a href="{{ route('mst_company.index') }}">会社情報</a></li>
           <li class="divider" tabindex="-1"></li>
           <li><a href="{{ route('mst_dept.index') }}">部署情報</a></li>
+          <li class="divider" tabindex="-1"></li>
+          <li><a href="{{ route('mst_group.index') }}">グループ情報</a></li>
         </ul><!-- /.Dropdown Structure -->
       </li>
       @endif

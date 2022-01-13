@@ -27,8 +27,8 @@
     </div>
     <div class="row">
       <div class="input-field col s12">
-        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '本日の作業内容を入力してください']) }}
-        {{ Form::label('todays_plan', '本日の作業内容') }}
+        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '本日の作業内容を入力してください（箇条書きの場合）']) }}
+        <label for="todays_plan"><i class="material-icons red-text lighten-1">create</i> 本日の作業内容</label>
       </div>
     </div>
     <div class="row">
@@ -85,13 +85,13 @@
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '明日の予定や今日未完了の仕事を書いてください']) }}
-        {{ Form::label('tomorrow_plan', '明日の予定') }}
+        <label for="tomorrow_plan"><i class="material-icons red-text lighten-1">create</i> 明日の予定</label>
       </div>
     </div>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '上記以外で気になる点や覚えた内容があれば書いてください']) }}
-        {{ Form::label('notices', '特記事項') }}
+        <label for="notices"><i class="material-icons red-text lighten-1">create</i> 特記事項</label>
       </div>
     </div><!-- /.report Form -->
 

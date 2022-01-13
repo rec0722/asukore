@@ -6,6 +6,7 @@ use App\Http\Controllers\ReportsController;
 // Master
 use App\Http\Controllers\MstCompaniesController;
 use App\Http\Controllers\MstDeptsController;
+use App\Http\Controllers\MstGroupsController;
 use App\Http\Controllers\UsersController;
 // Facades
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,7 @@ Route::post('/report/search', [ReportsController::class, 'search'])->middleware(
 // Master
 Route::resource('mst_company', MstCompaniesController::class)->middleware('auth:web');
 Route::resource('mst_dept', MstDeptsController::class)->middleware('auth:web');
+Route::resource('mst_group', MstGroupsController::class)->middleware('auth:web');
 Route::resource('mst_user', UsersController::class)->middleware('auth:web');
 Route::post('/get_dept', [UsersController::class, 'getDept'])->middleware('auth:web')->name('mst_user.dept');
 Route::get('/trash', [UsersController::class, 'trash'])->middleware('auth:web')->name('mst_user.trash');

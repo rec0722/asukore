@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserDept;
 use App\Models\MstCompany;
+use App\Models\MstCompanyGroup;
 use App\Models\MstDept;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -155,6 +156,12 @@ class UsersController extends Controller
   {
     $user = User::findOrFail($id);
     $userDept = UserDept::select('dept_id')->where('user_id', $id)->get()->toArray();
+    $group = MstCompanyGroup::where('company_id', $user['company_id'])->first();
+    if (!empty($group)) {
+      $user['group'] = MstCompanyGroup::getGroupArray($group['group_id']);
+    } else {
+      $user['group'] = null;
+    }
     if ($user['role'] > 7) {
       $user['companyList'] = MstCompany::companyList();
     } else {

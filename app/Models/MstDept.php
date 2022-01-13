@@ -118,7 +118,11 @@ class MstDept extends Model
    */
   public static function deptCheckList($user)
   {
-    $depts = MstDept::where('company_id', $user['company_id'])->get();
+    if (!is_null($user['group'])) {
+      $depts = MstDept::whereIn('company_id', $user['group'])->get();
+    } else {
+      $depts = MstDept::where('company_id', $user['company_id'])->get();
+    }
     $deptList = array();
     foreach ($depts as $dept) {
       $var = array($dept->id => $dept->name);

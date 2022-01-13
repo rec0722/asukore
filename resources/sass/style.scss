@@ -380,6 +380,12 @@ html {
     }
     .report {
         font-size: .95em;
+        input,
+        textarea {
+            &::placeholder {
+                font-size: .95em;
+            }
+        }
         .report-table {
             thead {
                 display: none;
@@ -394,15 +400,28 @@ html {
                             margin-top: 15px;
                         }
                     }
+                    .col-12 {
+                        padding: 5px 5px;
+                    }
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .report {
+        font-size: .9em;
+        input,
+        textarea {
+            &::placeholder {
+                font-size: .9em;
             }
         }
         .input-field {
             input,
             textarea {
-                &::placeholder {
-                    font-size: .9em;
-                }
+                min-height: 3.6em;
             }
         }
     }
