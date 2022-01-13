@@ -34,7 +34,6 @@ class MstCompany extends Model
     'tel',
     'fax',
     'email',
-    'report_num'
   ];
 
   /**
@@ -99,25 +98,5 @@ class MstCompany extends Model
       $prefList = $prefList + $var;
     }
     return $prefList;
-  }
-
-  /**
-   * Get report Row
-   */
-  public static function reportRow()
-  {
-    $rows = [
-      '1' => '1',
-      '2' => '2',
-      '3' => '3',
-      '4' => '4',
-      '5' => '5',
-      '6' => '6',
-      '7' => '7',
-      '8' => '8',
-      '9' => '9',
-      '10' => '10',
-    ];
-    return $rows;
   }
 }

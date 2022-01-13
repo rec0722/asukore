@@ -16,7 +16,7 @@ class CreateMstDeptsTable extends Migration
         Schema::create('mst_depts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->nullable();
-            $table->string('name', 11);
+            $table->string('name', 25);
             $table->timestamps();
             $table->softDeletes();
         });

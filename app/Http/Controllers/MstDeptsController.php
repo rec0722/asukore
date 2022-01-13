@@ -42,12 +42,13 @@ class MstDeptsController extends Controller
    */
   public function create()
   {
-    $company = MstCompany::companyList();
+    $list['companyList'] = MstCompany::companyList();
+    $list['rowList'] = MstDept::reportRow();
 
     return view(
       'mst_dept.create',
       compact(
-        'company'
+        'list'
       )
     );
   }
@@ -97,7 +98,8 @@ class MstDeptsController extends Controller
   public function edit($id)
   {
     $dept = MstDept::findOrFail($id);
-    $company = MstCompany::companyList();
+    $list['companyList'] = MstCompany::companyList();
+    $list['rowList'] = MstDept::reportRow();
 
     return
       view(
@@ -105,7 +107,7 @@ class MstDeptsController extends Controller
         compact(
           'id',
           'dept',
-          'company'
+          'list'
         )
       );
   }

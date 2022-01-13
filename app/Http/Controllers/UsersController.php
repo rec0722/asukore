@@ -78,8 +78,6 @@ class UsersController extends Controller
       'company_id' => 'required',
       'dept_id' => 'required',
       'role' => 'required',
-      'email' => 'required|string|email|max:255|unique:users',
-      'password' => 'required'
     ]);
 
     $id = '';
@@ -269,5 +267,22 @@ class UsersController extends Controller
   {
     $depts = MstDept::where('company_id', $request->company_id)->get();
     return $depts;
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function trash()
+  {
+    $users = User::onlyTrashed()->whereNotNull('id')->get();
+
+    return view(
+      'mst_user.trash',
+      compact(
+        'users',
+      )
+    );
   }
 }

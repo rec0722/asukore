@@ -22,7 +22,7 @@
           <div class="divider"></div>
           <div class="section">
             <h2 class="headline2">今日の作業内容</h2>
-            <p>{{ $report->todays_plan }}</p>
+            <p><pre>{{ $report->todays_plan }}</pre></p>
           </div>
           <div class="divider"></div>
           <table class="report-table">
@@ -41,12 +41,12 @@
           </table>
           <div class="section">
             <h2 class="headline2">明日の予定</h2>
-            <p>{{ $report->tomorrow_plan }}</p>
+            <p><pre>{{ $report->tomorrow_plan }}</pre></p>
           </div>
           <div class="divider"></div>
           <div class="section">
             <h2 class="headline2">特記事項</h2>
-            <p>{{ $report->notices }}</p>
+            <p><pre>{{ $report->notices }}</pre></p>
           </div>
         </div>
 

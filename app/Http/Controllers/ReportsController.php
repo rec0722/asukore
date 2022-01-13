@@ -63,9 +63,12 @@ class ReportsController extends Controller
     }
     // レポート一覧取得
     if ($user['role'] === 8) {
+      $reports = Report::all();
+      /*
       $reports = Report::where('dept_id', function ($query) use ($user) {
         $query->select('dept_id')->from('user_depts')->where('user_id', $user['id']);
       })->orderBy('report_date', 'desc')->get();
+      */
     } elseif ($user['role'] === 4) {
       $reports = Report::where('dept_id', $user['dept_id'])->orderByRaw('report_date desc, dept_id desc')->get();
     } else {
@@ -98,7 +101,7 @@ class ReportsController extends Controller
   {
     $user = Auth::user();
     $item['date'] = date('Y-m-d');
-    $item['rows'] = MstCompany::findOrFail($user->company_id)->report_num;
+    $item['rows'] = MstDept::findOrFail($user->dept_id)->report_num;
     $report = Report::whereRaw(
       'user_id = :user_id AND report_date = :report_date',
       [
@@ -146,6 +149,21 @@ class ReportsController extends Controller
         $actions = $request->action_list;
         if (isset($actions)) {
           foreach ($actions as $act) {
+            if (array_key_exists('time1', $act) === false) {
+              $act['time1'] = null;
+            }
+            if (array_key_exists('time2', $act) === false) {
+              $act['time2'] = null;
+            }
+            if (array_key_exists('customer', $act) === false) {
+              $act['customer'] = null;
+            }
+            if (array_key_exists('action', $act) === false) {
+              $act['action'] = null;
+            }
+            if (array_key_exists('approach', $act) === false) {
+              $act['approach'] = null;
+            }
             if ($act['delete_flg'] !== '1') {
               $data = [
                 'report_id' => $id,
@@ -188,7 +206,7 @@ class ReportsController extends Controller
     $report = Report::findOrFail($id);
     $report['prev'] = Report::getPrev($id, $report, $user);
     $report['next'] = Report::getNext($id, $report, $user);
-    $actions = ReportAction::selectRaw('*, date_format(time1, "%H:%i") AS time1, date_format(time2, "%H:%i") AS time2')
+    $actions = ReportAction::select('*')
       ->where('report_id', $id)
       ->orderBy('id', 'asc')->get();
     for ($i = 0; $i < count($actions); $i++) {
@@ -249,11 +267,17 @@ class ReportsController extends Controller
         $actions = $request->action_list;
         if (isset($actions)) {
           foreach ($actions as $act) {
-            if ($act['delete_flg'] !== '1') {
+            if ($act['delete_flg'] === '1') {
+              $item = ReportAction::where('id', $act['id'])->get();
+              if (!is_null($item)) {
+                ReportAction::findOrFail($act['id'])->delete();
+              }
+            } else {
               DB::table('report_actions')
                 ->updateOrInsert(
                   ['id' => $act['id']],
                   [
+                    'report_id' => $report['id'],
                     'time1' => $act['time1'],
                     'time2' => $act['time2'],
                     'customer' => $act['customer'],

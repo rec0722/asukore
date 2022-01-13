@@ -16,8 +16,8 @@ $(function() {
         clone.find('.input1 input').attr('name', 'action_list[' + itemV + '][time1]').val('');
         clone.find('.input2 input').attr('name', 'action_list[' + itemV + '][time2]').val('');
         clone.find('.input3 input').attr('name', 'action_list[' + itemV + '][customer]').val('');
-        clone.find('.input4 input').attr('name', 'action_list[' + itemV + '][action]').val('');
-        clone.find('.input5 input').attr('name', 'action_list[' + itemV + '][approach]').val('');
+        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').val('');
+        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').val('');
         clone.find('.button input').attr('name', 'action_list[' + itemV + '][delete_flg]');
         clone.find('.button input').attr('id', 'flg' + itemV).val('');
         clone.find('.button button').attr('id', itemV);
@@ -119,6 +119,7 @@ $(function() {
         defaultDate: null,
         format: 'yyyy-mm-dd',
         firstDay: 1,
+        onSelect: true,
         showMonthAfterYear: true,
         i18n: {
             months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],

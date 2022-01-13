@@ -33,7 +33,7 @@
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('prefecture_id', '都道府県') }}
-      {{ Form::select('prefecture_id', $company['prefList'], null, ['class' => 'browser-default p-region-id']) }}
+      {{ Form::select('prefecture_id', $list['prefList'], null, ['class' => 'browser-default p-region-id']) }}
     </div>
   </div>
   <div class="row">
@@ -64,13 +64,6 @@
     <div class="input-field col s8 l4">
       {{ Form::text('fax', null, ['class' => 'validate', 'id' => 'fax']) }}
       {{ Form::label('fax', 'FAX番号') }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s12 l6">
-      {{ Form::label('report_num', '報告行数') }}
-      {{ Form::select('report_num',  $company['rowList'], null, ['class' => 'browser-default']) }}
-      <span class="helper-text">※時間単位の報告の行数を設定してください</span>
     </div>
   </div>
   <!-- /.company Form -->

@@ -37,12 +37,10 @@ class ReportAction extends Model
   {
     if (!empty($action['time1']) && !empty($action['time2'])) {
       $time = $action['time1'] . '〜' . $action['time2'];
-    } elseif (!empty($action['time1']) || !empty($action['time2'])) {
-      if (!empty($action['time1'])) {
-        $time = $action['time1'] . '〜';
-      } else {
+    } elseif (!empty($action['time1']) && empty($action['time2'])) {
+      $time = $action['time1'] . '〜';
+    } elseif (empty($action['time1']) && !empty($action['time2'])) {
         $time = '〜' . $action['time2'];
-      }
     } else {
       $time = null;
     }

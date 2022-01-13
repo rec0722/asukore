@@ -23,7 +23,8 @@ class MstDept extends Model
    */
   protected $fillable = [
     'company_id',
-    'name'
+    'name',
+    'report_num'
   ];
 
   /**
@@ -50,7 +51,7 @@ class MstDept extends Model
   {
     $depts = MstDept::get();
     $deptList = array(
-      '' => '部署名選択'
+      '' => '部署選択'
     );
     foreach ($depts as $dept) {
       $var = array($dept->id => $dept->name);
@@ -73,6 +74,26 @@ class MstDept extends Model
       $deptList = $deptList + $var;
     }
     return $deptList;
+  }
+
+  /**
+   * Get report Row
+   */
+  public static function reportRow()
+  {
+    $rows = [
+      '1' => '1',
+      '2' => '2',
+      '3' => '3',
+      '4' => '4',
+      '5' => '5',
+      '6' => '6',
+      '7' => '7',
+      '8' => '8',
+      '9' => '9',
+      '10' => '10',
+    ];
+    return $rows;
   }
 
   /**

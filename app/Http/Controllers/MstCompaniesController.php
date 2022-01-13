@@ -41,14 +41,13 @@ class MstCompaniesController extends Controller
    */
   public function create()
   {
-    $company['prefList'] = MstCompany::prefectureList();
-    $company['rowList'] = MstCompany::reportRow();
+    $list['prefList'] = MstCompany::prefectureList();
 
     return
       view(
         'mst_company.create',
         compact(
-          'company'
+          'list'
         )
       );
   }
@@ -109,15 +108,15 @@ class MstCompaniesController extends Controller
   public function edit($id)
   {
     $company = MstCompany::findOrFail($id);
-    $company['prefList'] = MstCompany::prefectureList();
-    $company['rowList'] = MstCompany::reportRow();
+    $list['prefList'] = MstCompany::prefectureList();
 
     return
       view(
         'mst_company.edit',
         compact(
           'id',
-          'company'
+          'company',
+          'list'
         )
       );
   }

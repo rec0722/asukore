@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('company_id', '会社選択') }}
-      {{ Form::select('company_id', $company, null, ['class' => 'browser-default']) }}
+      {{ Form::select('company_id', $list['companyList'], null, ['class' => 'browser-default']) }}
       <div class="input-field">
         <span class="helper-text">※必須項目です</span>
       </div>
@@ -34,6 +34,13 @@
       @error('name')
       <span class="error invalid-feedback">{{ $message }}</span>
       @enderror
+    </div>
+  </div>
+  <div class="row">
+    {{ Form::label('report_num', '報告行数') }}
+    {{ Form::select('report_num',  $list['rowList'], null, ['class' => 'browser-default']) }}
+    <div class="input-field">
+      <span class="helper-text">※時間単位の報告の行数を設定してください</span>
     </div>
   </div>
   <!-- /.depture Form -->

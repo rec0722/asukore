@@ -12,7 +12,7 @@
 <section class="content z-depth-1">
 
   <!-- Company List -->
-  <table class="table">
+  <table class="table table-responsive">
     <thead>
       <tr>
         <th>会社名</th>
@@ -24,12 +24,12 @@
 
       @foreach ($companies as $com)
       <tr>
-        <td>{{ $com->name }}</td>
-        <td>{{ $com->prefecture->name }}{{ $com->city }}</td>
-        <td class="center-align">
+        <td class="row-title">{{ $com->name }}</td>
+        <td data-title="住所 : ">{{ $com->prefecture->name }}{{ $com->city }}</td>
+        <td class="half center-align">
           {{ link_to_route('mst_company.show', '詳細', $com->id, ['class' => 'wave-effect wave-light btn']) }}
         </td>
-        <td class="center-align">
+        <td class="half center-align">
           {{ Form::open(['method' => 'delete', 'route' => ['mst_company.destroy', $com->id]]) }}
           {{ Form::button('削除', ['class' => 'wave-effect wave-light btn red lighten-1', 'onclick' => "return confirm('本当に削除しますか?')", 'type' => 'submit']) }}
           {{ Form::close() }}

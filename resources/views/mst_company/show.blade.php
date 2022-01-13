@@ -21,15 +21,15 @@
       </div>
       <div class="divider"></div>
       <div class="section">
-        <p><span>tel: </span>{{ $company->tel }}</p>
+        <p><span>tel : </span>{{ $company->tel }}</p>
       </div>
       <div class="divider"></div>
       <div class="section">
-        <p><span>fax: </span>{{ $company->fax }}</p>
+        <p><span>fax : </span>{{ $company->fax }}</p>
       </div>
       <div class="divider"></div>
       <div class="section">
-        <p><span>email: </span>{{ $company->email }}</p>
+        <p><span>Email : </span>{{ $company->email }}</p>
       </div>
       <div class="divider"></div>
     </div>

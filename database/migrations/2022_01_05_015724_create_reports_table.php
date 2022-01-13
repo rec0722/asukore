@@ -16,6 +16,7 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable();
+            $table->foreignId('dept_id')->nullable();
             $table->date('report_date')->nullable();
             $table->text('todays_plan')->nullable();
             $table->text('tomorrow_plan')->nullable();

@@ -23,7 +23,7 @@
       </div>
       <div class="divider"></div>
       <div class="section">
-        <p><span>email: </span>{{ $user->email }}</p>
+        <p><span>email : </span>{{ $user->email }}</p>
       </div>
       <div class="divider"></div>
     </div>

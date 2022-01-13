@@ -130,7 +130,7 @@ class User extends Authenticatable
       $users = User::where('id', $user['id'])->get();
     }
     $userList = array(
-      '' => '社員名選択'
+      '' => '社員選択'
     );
     foreach ($users as $user) {
       $var = array($user->id => $user->name);
