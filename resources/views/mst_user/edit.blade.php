@@ -86,6 +86,8 @@
       </div>
     </div>
   </div>
+  @else
+    {{ Form::hidden('role', null) }}
   @endif
 
   <div class="divider"></div>

@@ -11,8 +11,6 @@
 <!-- Main content -->
 <section class="content z-depth-1">
 
-  {{ Form::open(['route' => 'mst_user.store']) }}
-
   <!-- Company List -->
   <table class="table table-responsive">
     <thead>
@@ -31,7 +29,7 @@
         <td data-title="会社名 : ">{{ $user->company->name }}</td>
         <td data-title="所属 : ">{{ $user->dept->name }}</td>
         <td class="center-align">
-          {{ Form::open(['method' => 'delete', 'route' => ['mst_user.destroy', $user->id]]) }}
+          {{ Form::open(['route' => ['mst_user.restore', $user->id], 'method' => 'PATCH']) }}
           {{ Form::button('復元する', ['class' => 'wave-effect wave-light btn lighten-1', 'type' => 'submit']) }}
           {{ Form::close() }}
         </td>
@@ -45,11 +43,11 @@
 
   <div class="row">
     <div class="col s12 center-align">
-      {{ Form::button('ゴミ箱を空にする', ['class' => 'waves-effect waves-light btn grey', 'onclick' => "return confirm('本当に削除しますか?')", 'type' => 'submit']) }}
+      {{ Form::open(['route' => 'mst_user.force_delete', 'method' => 'DELETE']) }}
+      {{ Form::button('ゴミ箱を空にする', ['class' => 'waves-effect waves-light btn grey', 'onclick' => "return confirm('完全に削除しますか?')", 'type' => 'submit']) }}
+      {{ Form::close() }}
     </div>
   </div>
-
-  {{ Form::close() }}
 
 </section>
 <!-- /.content -->

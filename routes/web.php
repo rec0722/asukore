@@ -47,6 +47,9 @@ Route::post('/report/search', [ReportsController::class, 'search'])->middleware(
 Route::resource('mst_company', MstCompaniesController::class)->middleware('auth:web');
 Route::resource('mst_dept', MstDeptsController::class)->middleware('auth:web');
 Route::resource('mst_group', MstGroupsController::class)->middleware('auth:web');
+Route::get('/mst_user/trash', [UsersController::class, 'trash'])->middleware('auth:web')->name('mst_user.trash');
+Route::patch('/mst_user/{id}/restore', [UsersController::class, 'restore'])->middleware('auth:web')->name('mst_user.restore');
+Route::delete('/mst_user/force_delete', [UsersController::class, 'forceDelete'])->name('mst_user.force_delete');
 Route::resource('mst_user', UsersController::class)->middleware('auth:web');
 Route::post('/get_dept', [UsersController::class, 'getDept'])->middleware('auth:web')->name('mst_user.dept');
-Route::get('/trash', [UsersController::class, 'trash'])->middleware('auth:web')->name('mst_user.trash');
+

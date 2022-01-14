@@ -292,4 +292,32 @@ class UsersController extends Controller
       )
     );
   }
+
+  /**
+   * Restore a resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function restore(Request $request)
+  {
+    User::onlyTrashed()->where('id', $request->id)->restore();
+
+    return redirect()
+      ->route('mst_user.index');
+  }
+
+   /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function forceDelete()
+  {
+    User::onlyTrashed()->forceDelete();
+
+    return redirect()
+      ->route('mst_user.index');
+  }
 }

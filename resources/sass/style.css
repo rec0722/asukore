@@ -247,6 +247,9 @@ html body .container3 {
 .report input:disabled {
   color: rgba(0, 0, 0, 0.87) !important;
 }
+.report pre {
+  white-space: pre-wrap;
+}
 .report .headline2 {
   padding: 0.25em 0.5em 0.15em;
   border-left: 3px solid rgba(0, 0, 0, 0.87);
