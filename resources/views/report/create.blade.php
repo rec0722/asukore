@@ -6,13 +6,13 @@
 
 <div class="container3">
   <div class="page-title">
-    <h1 class="headline1">@yield('title')</h1>
+    <h1 class="report-h1">@yield('title')</h1>
   </div>
 
   <!-- content -->
   <section class="content z-depth-1 report">
 
-    {{ Form::open(['route' => 'report.store']) }}
+    {{ Form::open(['route' => 'report.store', 'files' => true]) }}
 
     <!-- report Form -->
     <div class="row">
@@ -25,13 +25,38 @@
         {{ Form::label('user_id', '報告者') }}
       </div>
     </div>
-    <div class="row">
+    <h2 class="report-h1">今日の作業内容</h2>
+    <div class="report-type-box">
+      <div class="row input-field">
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_free', 1, $item['input_free'], ['class'=>'filled-in inputType']) }}
+            <span>フリー入力</span>
+          </label>
+        </div>
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_time', 1, $item['input_time'], ['class'=>'filled-in inputType']) }}
+            <span>時間制入力</span>
+          </label>
+        </div>
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_pic', 1, $item['input_pic'], ['class'=>'filled-in inputType']) }}
+            <span>画像で報告</span>
+          </label>
+        </div>
+      </div>
+      <p class="small grey-text">※表示のデフォルト設定は<a href="{{ route('mst_user.edit', $user->id) }}" class="underline">プロフィール</a>から変更できます</p>
+    </div>
+    <div class="row {{ $item['free'] }}" id="free-box">
       <div class="input-field col s12">
-        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '本日の作業内容を入力してください（箇条書きの場合）']) }}
-        <label for="todays_plan"><i class="material-icons red-text lighten-1">create</i> 本日の作業内容</label>
+        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '作業内容を入力してください']) }}
+        <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> フリー入力</label>
       </div>
     </div>
-    <div class="row">
+    <div class="row {{ $item['time'] }}" id="time-box">
+      <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 時間制入力</label>
       <table id="tableAction" class="report-table">
         <thead>
           <tr class="flex">
@@ -44,15 +69,16 @@
         </thead>
         <tbody>
 
-          @for ($i = 0; $i < $item['rows']; $i++) <tr class="flex">
+          @for ($i = 0; $i < $item['rows']; $i++)
+          <tr class="flex">
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', null) }}
               <span class="col s5 input1">
-                {{ Form::text('action_list[' . $i . '][time1]', null, ['class' => 'timepicker', 'placeholder' => '10:00']) }}
+                {{ Form::text('action_list[' . $i . '][time1]', null, ['class' => 'time js-time-picker', 'id' => 'time1_' . $i, 'placeholder' => '10:00']) }}
               </span>
               <label class="col s2">〜</label>
               <span class="col s5 input2">
-                {{ Form::text('action_list[' . $i . '][time2]', null, ['class' => 'timepicker', 'placeholder' => '11:00']) }}
+                {{ Form::text('action_list[' . $i . '][time2]', null, ['class' => 'time js-time-picker', 'id' => 'time2_' . $i, 'placeholder' => '11:00']) }}
               </span>
             </td>
             <td class="col-12 col-md-2 input3">
@@ -82,16 +108,30 @@
         </tfoot>
       </table>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
-        {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '明日の予定や今日未完了の仕事を書いてください']) }}
-        <label for="tomorrow_plan"><i class="material-icons red-text lighten-1">create</i> 明日の予定</label>
+    <div class="row {{ $item['pic'] }}" id="pic-box">
+    <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 画像報告</label>
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>ファイル</span>
+          <input type="file" name="todays_image">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" placeholder="画像をアップロード">
+        </div>
       </div>
     </div>
+    <h2 class="report-h1">明日の予定</h2>
     <div class="row">
       <div class="input-field col s12">
-        {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '上記以外で気になる点や覚えた内容があれば書いてください']) }}
-        <label for="notices"><i class="material-icons red-text lighten-1">create</i> 特記事項</label>
+        {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
+        <label for="tomorrow_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 明日の予定や今日未完了の仕事を書いてください</label>
+      </div>
+    </div>
+    <h2 class="report-h1">特記事項</h2>
+    <div class="row">
+      <div class="input-field col s12">
+        {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
+        <label for="notices" class="red-text text-lighten-3"><i class="material-icons">create</i> 気になる点や覚えた内容があれば書いてください</label>
       </div>
     </div><!-- /.report Form -->
 

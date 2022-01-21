@@ -165,4 +165,18 @@ class Report extends Model
 
     return $next;
   }
+  /**
+   * Get value as a role
+   */
+  public static function getInputType($item, $string, $user)
+  {
+    $strName = 'input_' . $string;
+    $item[$strName] = $user->$strName;
+    if ($item[$strName] === 1) {
+      $item[$string] = 'report-type-block';
+    } else {
+      $item[$string] = 'report-type-none';
+    }
+    return $item;
+  }
 }

@@ -63,7 +63,7 @@
       </div>
     </div>
   </div>
-  <div id="userDept" class="row display-none">
+  <div id="userDept" class="row">
     <div class="col s12 l6">
       {{ Form::label('dept', '閲覧権限') }}
       <div class="input-field">
@@ -75,6 +75,31 @@
           </label>
         </p>
         @endforeach
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 l6">
+      {{ Form::label('input_type', '入力設定') }}
+      <div class="input-field">
+        <p>
+          <label>
+            {{ Form::checkbox('input_free', 1, null, ['class'=>'filled-in']) }}
+            <span>フリー入力</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            {{ Form::checkbox('input_time', 1, null, ['class'=>'filled-in']) }}
+            <span>時間制入力</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            {{ Form::checkbox('input_pic', 1, null, ['class'=>'filled-in']) }}
+            <span>画像報告</span>
+          </label>
+        </p>
       </div>
     </div>
   </div>

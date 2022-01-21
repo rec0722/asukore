@@ -7,6 +7,7 @@ use App\Models\UserDept;
 use App\Models\MstCompany;
 use App\Models\MstCompanyGroup;
 use App\Models\MstDept;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -91,6 +92,9 @@ class UsersController extends Controller
           'company_id' => $request->company_id,
           'dept_id' => $request->dept_id,
           'role' => $request->role,
+          'input_free' => $request->input_free,
+          'input_time' => $request->input_time,
+          'input_pic' => $request->input_pic,
           'email' => $request->email,
           'password' => Hash::make($request->password)
         ];
@@ -199,11 +203,15 @@ class UsersController extends Controller
 
     try {
       DB::transaction(function () use ($request, $id) {
+        $request = User::UserInputType($request);
         $data = [
           'name' => $request->name,
           'company_id' => $request->company_id,
           'dept_id' => $request->dept_id,
           'role' => $request->role,
+          'input_free' => $request->input_free,
+          'input_time' => $request->input_time,
+          'input_pic' => $request->input_pic,
           'email' => $request->email,
         ];
 
@@ -255,6 +263,7 @@ class UsersController extends Controller
   public function destroy($id)
   {
     User::findOrFail($id)->delete();
+    Report::where('user_id', $id)->delete();
 
     return redirect()
       ->route('mst_user.index')
@@ -302,6 +311,7 @@ class UsersController extends Controller
   public function restore(Request $request)
   {
     User::onlyTrashed()->where('id', $request->id)->restore();
+    Report::onlyTrashed()->where('user_id', $request->id)->restore();
 
     return redirect()
       ->route('mst_user.index');
@@ -316,6 +326,7 @@ class UsersController extends Controller
   public function forceDelete()
   {
     User::onlyTrashed()->forceDelete();
+    Report::onlyTrashed()->forceDelete();
 
     return redirect()
       ->route('mst_user.index');

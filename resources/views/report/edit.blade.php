@@ -12,7 +12,7 @@
   <!-- content -->
   <section class="content z-depth-1 report">
 
-    {{ Form::model($report, ['route' => ['report.update', $id], 'method' => 'PATCH']) }}
+    {{ Form::model($report, ['route' => ['report.update', $id], 'files' => true, 'method' => 'PATCH']) }}
 
     <!-- report Form -->
     <div class="row">
@@ -21,13 +21,37 @@
         <p>{{ optional($report['report_date'])->format('Y年m月d日') }}</p>
       </div>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
-        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '本日の作業内容を入力してください']) }}
-        {{ Form::label('todays_plan', '本日の作業内容') }}
+    <h2 class="report-h1">今日の作業内容</h2>
+    <div class="report-type-box">
+      <div class="row input-field">
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_free', 1, $item['input_free'], ['class'=>'filled-in inputType']) }}
+            <span>フリー入力</span>
+          </label>
+        </div>
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_time', 1, $item['input_time'], ['class'=>'filled-in inputType']) }}
+            <span>時間制入力</span>
+          </label>
+        </div>
+        <div class="col s12 l3">
+          <label>
+            {{ Form::checkbox('input_pic', 1, $item['input_pic'], ['class'=>'filled-in inputType']) }}
+            <span>画像で報告</span>
+          </label>
+        </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row {{ $item['free'] }}" id="free-box">
+      <div class="input-field col s12">
+        {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '作業内容を入力してください']) }}
+        <label for="todays_plan" class="green-text"><i class="material-icons">create</i> フリー入力</label>
+      </div>
+    </div>
+    <div class="row {{ $item['time'] }}" id="time-box">
+      <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 時間制入力</label>
       <table id="tableAction" class="report-table">
         <thead>
           <tr class="flex">
@@ -79,12 +103,26 @@
         </tfoot>
       </table>
     </div>
+    <div class="row {{ $item['pic'] }}" id="pic-box">
+    <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 画像報告</label>
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>ファイル</span>
+          <input type="file" name="todays_image" accept="image/*,.pdf">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text" placeholder="画像をアップロード">
+        </div>
+      </div>
+    </div>
+    <h2 class="report-h1">明日の予定</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '明日の予定や今日完了できなかった仕事を書いてください']) }}
         {{ Form::label('tomorrow_plan', '明日の予定') }}
       </div>
     </div>
+    <h2 class="report-h1">特記事項</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '上記の報告以外で気になる点や覚えた内容があれば書いてください']) }}

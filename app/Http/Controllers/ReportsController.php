@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\ReportAction;
+use App\Models\ReportImage;
 use App\Models\User;
-use App\Models\UserDept;
-use App\Models\MstCompany;
 use App\Models\MstDept;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,6 +105,10 @@ class ReportsController extends Controller
         ':report_date' => $item['date']
       ]
     )->first();
+    $userInfo = User::findOrFail($user->id);
+    $item = Report::getInputType($item, 'free', $userInfo);
+    $item = Report::getInputType($item, 'time', $userInfo);
+    $item = Report::getInputType($item, 'pic', $userInfo);
 
     if (!is_null($report)) {
       return redirect()->route('report.edit', $report->id);
@@ -146,22 +149,8 @@ class ReportsController extends Controller
         $actions = $request->action_list;
         if (isset($actions)) {
           foreach ($actions as $act) {
-            if (array_key_exists('time1', $act) === false) {
-              $act['time1'] = null;
-            }
-            if (array_key_exists('time2', $act) === false) {
-              $act['time2'] = null;
-            }
-            if (array_key_exists('customer', $act) === false) {
-              $act['customer'] = null;
-            }
-            if (array_key_exists('action', $act) === false) {
-              $act['action'] = null;
-            }
-            if (array_key_exists('approach', $act) === false) {
-              $act['approach'] = null;
-            }
-            if ($act['delete_flg'] !== '1') {
+            $act = ReportAction::checkArrayData($act);
+            if ($act['delete_flg'] !== '1' && count(array_filter($act)) !== 0) {
               $data = [
                 'report_id' => $id,
                 'time1' => $act['time1'],
@@ -173,6 +162,17 @@ class ReportsController extends Controller
               ReportAction::create($data);
             }
           }
+        }
+        // 画像報告を登録
+        if ($request->hasFile('todays_image')) {
+          $images = $request->file('todays_image');
+          $file = ReportImage::uploadFile($images, $id);
+          $data = [
+            'report_id' => $id,
+            'file' => $file,
+            'sort' => 1,
+          ];
+          ReportImage::create($data);
         }
       }, 2);
     } catch (Throwable $e) {
@@ -203,11 +203,13 @@ class ReportsController extends Controller
     $report = Report::findOrFail($id);
     $report['prev'] = Report::getPrev($id, $report, $user);
     $report['next'] = Report::getNext($id, $report, $user);
-    $actions = ReportAction::select('*')
-      ->where('report_id', $id)
-      ->orderBy('id', 'asc')->get();
+    $actions = ReportAction::where('report_id', $id)->orderBy('id', 'asc')->get();
     for ($i = 0; $i < count($actions); $i++) {
       $actions[$i]['time'] = ReportAction::getActionTime($actions[$i]);
+    }
+    $images = ReportImage::where('report_id', $id)->orderBy('sort', 'asc')->get();
+    for ($i = 0; $i < count($images); $i++) {
+      $images[$i]['url'] = ReportImage::getFileUrl($images[$i], $id);
     }
 
     return
@@ -216,7 +218,8 @@ class ReportsController extends Controller
         compact(
           'id',
           'report',
-          'actions'
+          'actions',
+          'images'
         )
       );
   }
@@ -234,6 +237,11 @@ class ReportsController extends Controller
     for ($i = 0; $i < count($actions); $i++) {
       $actions[$i]['time'] = ReportAction::getActionTime($actions[$i]);
     }
+    $userInfo = User::findOrFail(Auth::user()->id);
+    $item = array();
+    $item = Report::getInputType($item, 'free', $userInfo);
+    $item = Report::getInputType($item, 'time', $userInfo);
+    $item = Report::getInputType($item, 'pic', $userInfo);
 
     return
       view(
@@ -241,7 +249,8 @@ class ReportsController extends Controller
         compact(
           'id',
           'report',
-          'actions'
+          'actions',
+          'item'
         )
       );
   }
@@ -284,6 +293,17 @@ class ReportsController extends Controller
                 );
             }
           }
+        }
+        // 画像報告を登録
+        if ($request->hasFile('todays_image')) {
+          $images = $request->file('todays_image');
+          $file = ReportImage::uploadFile($images, $id);
+          $data = [
+            'report_id' => $id,
+            'file' => $file,
+            'sort' => 1,
+          ];
+          ReportImage::create($data);
         }
       }, 2);
     } catch (Throwable $e) {

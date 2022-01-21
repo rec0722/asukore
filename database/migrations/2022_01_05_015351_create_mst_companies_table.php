@@ -16,7 +16,7 @@ class CreateMstCompaniesTable extends Migration
         Schema::create('mst_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->integer('zipcode')->length('7')->nullable();
+            $table->string('zipcode', 8)->nullable();
             $table->foreignId('prefecture_id')->nullable();
             $table->string('city', 25)->nullable();
             $table->string('address')->nullable();

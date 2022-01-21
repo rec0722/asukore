@@ -89,6 +89,31 @@
   @else
     {{ Form::hidden('role', null) }}
   @endif
+  <div class="row">
+    <div class="col s12 l6">
+      {{ Form::label('input_type', '入力設定') }}
+      <div class="input-field">
+        <p>
+          <label>
+            {{ Form::checkbox('input_free', 1, $user['input_free'], ['class'=>'filled-in mstType']) }}
+            <span>フリー入力</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            {{ Form::checkbox('input_time', 1, $user['input_time'], ['class'=>'filled-in mstType']) }}
+            <span>時間制入力</span>
+          </label>
+        </p>
+        <p>
+          <label>
+            {{ Form::checkbox('input_pic', 1, $user['input_pic'], ['class'=>'filled-in mstType']) }}
+            <span>画像報告</span>
+          </label>
+        </p>
+      </div>
+    </div>
+  </div>
 
   <div class="divider"></div>
   <h2 class="headline1">ログイン情報</h2>

@@ -9,6 +9,8 @@
 
   <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('dist/picker.min.css') }}">
+  <link rel='stylesheet' type="text/css" href='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.0/main.css'>
 </head>
 
 <body>
@@ -25,12 +27,12 @@
 
   @include('layouts.footer')
 
-  <link href='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.0/main.css' rel='stylesheet' />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.0/main.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{{ asset('dist/moment.js') }}"></script>
+  <script src="{{ asset('dist/picker.min.js') }}"></script>
   <script src="{{ asset('js/app.js') }}"></script>
   <script src="{{ asset('js/bundle.js') }}"></script>
-  <script src="{{ asset('js/fullcalendar.js') }}"></script>
 </body>
 
 </html>

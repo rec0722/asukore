@@ -21,9 +21,10 @@
           </div>
           <div class="divider"></div>
           <div class="section">
-            <h2 class="headline2">今日の作業内容</h2>
-            <p><pre>{{ $report->todays_plan }}</pre></p>
+            <h2 class="report-h2">今日の作業内容</h2>
+            <pre>{{ $report->todays_plan }}</pre>
           </div>
+          @if (!empty($actions))
           <div class="divider"></div>
           <table class="report-table">
             <tbody>
@@ -39,14 +40,24 @@
 
             </tbody>
           </table>
+          @endif
+          @if (!empty($images))
+          <div class="divider"></div>
+          @foreach($images as $img)
+          <figure class="report-images">
+            <img src="{{ $img['url'] }}">
+            <figcaption>{{ $img['title'] }}</figcaption>
+          </figure>
+          @endforeach
+          @endif
           <div class="section">
-            <h2 class="headline2">明日の予定</h2>
-            <p><pre>{{ $report->tomorrow_plan }}</pre></p>
+            <h2 class="report-h2">明日の予定</h2>
+            <pre>{{ $report->tomorrow_plan }}</pre>
           </div>
           <div class="divider"></div>
           <div class="section">
-            <h2 class="headline2">特記事項</h2>
-            <p><pre>{{ $report->notices }}</pre></p>
+            <h2 class="report-h2">特記事項</h2>
+            <pre>{{ $report->notices }}</pre>
           </div>
         </div>
 

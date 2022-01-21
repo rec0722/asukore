@@ -37,6 +37,9 @@ class User extends Authenticatable
     'email',
     'password',
     'role',
+    'input_free',
+    'input_time',
+    'input_pic',
   ];
 
   /**
@@ -153,6 +156,33 @@ class User extends Authenticatable
       $deptList[] = $item['dept_id'];
     }
     return $deptList;
+  }
+
+  /**
+   * Get data for input type.
+   */
+  public static function UserInputType($request)
+  {
+    $itemLists = $request->toArray();
+    // フリー入力
+    if (array_key_exists('input_free', $itemLists) === false) {
+      $request['input_free'] = 0;
+    } else {
+      $request['input_free'] = 1;
+    }
+    // 時間制入力
+    if (array_key_exists('input_time', $itemLists) === false) {
+      $request['input_time'] = 0;
+    } else {
+      $request['input_time'] = 1;
+    }
+    // 画像報告
+    if (array_key_exists('input_pic', $itemLists) === false) {
+      $request['input_pic'] = 0;
+    } else {
+      $request['input_pic'] = 1;
+    }
+    return $request;
   }
 
   /**

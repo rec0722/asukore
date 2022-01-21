@@ -5,19 +5,36 @@
 =================================================================== */
 $(function() {
     // 時間報告の行追加
-    $(document).on('click', '.addItem', function(e) {
-        e.preventDefault();
+    $(document).on('click', '.inputType', function(obj) {
+        let itemName = obj.target.name;
+        if (itemName === 'input_free') {
+            var box = $('#free-box');
+        } else if (itemName === 'input_time') {
+            var box = $('#time-box');
+        } else if (itemName === 'input_pic') {
+            var box = $('#pic-box');
+        }
+        if (obj.target.checked === true) {
+            box.css({ 'display': 'block' });
+        } else {
+            box.css({ 'display': 'none' });
+        }
+    });
+    // 時間報告の行追加
+    $(document).on('click', '.addItem', function() {
         let itemV = document.getElementById('getItemNum').value; // 個数を取得
         let tableBody = $("#tableAction tbody");
         let trLast = tableBody.find("tr:last");
-        let clone = trLast.clone();
+        let clone = trLast.clone(true);
         // inputを複製
         clone.find('.id input:hidden').attr('name', 'action_list[' + itemV + '][id]').val('');
-        clone.find('.input1 input').attr('name', 'action_list[' + itemV + '][time1]').val('');
-        clone.find('.input2 input').attr('name', 'action_list[' + itemV + '][time2]').val('');
+        clone.find('.input1 input').attr('name', 'action_list[' + itemV + '][time1]');
+        clone.find('.input1 input').attr('id', 'time1_' + itemV).val('');
+        clone.find('.input2 input').attr('name', 'action_list[' + itemV + '][time2]');
+        clone.find('.input2 input').attr('id', 'time2_' + itemV).val('');
         clone.find('.input3 input').attr('name', 'action_list[' + itemV + '][customer]').val('');
-        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').val('');
-        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').val('');
+        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').css({ 'height': '3em' }).val('');
+        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').css({ 'height': '3em' }).val('');
         clone.find('.button input').attr('name', 'action_list[' + itemV + '][delete_flg]');
         clone.find('.button input').attr('id', 'flg' + itemV).val('');
         clone.find('.button button').attr('id', itemV);
@@ -101,6 +118,24 @@ $(function() {
             $(dept).addClass('display-none');
         }
     });
+
+    // 報告入力のタイプ別デフォルト設定
+    $(document).on('click', '.mstType', function(obj) {
+        let itemName = obj.target.name;
+        if (itemName === 'input_free') {
+            obj.tar
+        } else if (itemName === 'input_time') {
+            var box = $('#time-box');
+        } else if (itemName === 'input_pic') {
+            var box = $('#pic-box');
+        }
+        if (obj.target.checked === true) {
+            box.css({ 'display': 'block' });
+        } else {
+            box.css({ 'display': 'none' });
+        }
+        console.log(box);
+    });
 });
 
 
@@ -129,9 +164,50 @@ $(function() {
             weekdaysAbbrev: ['日', '月', '火', '水', '木', '金', '土']
         }
     });
-    $('.timepicker').timepicker({
+    /*
+    $(this).timepicker({
         autoClose: true,
         twelveHour: false,
         options: 'step',
     });
+    */
+});
+
+function TimePicker() {
+    var target = '.js-time-picker';
+
+    var now = moment();
+    var dateFormat = {
+        zone: 'Asia/Tokyo',
+        year: now.year(),
+        month: now.month(),
+        day: now.day(),
+        hour: now.hour(),
+        minute: 0,
+        second: 0
+    };
+
+    var date = moment().set(dateFormat);
+
+    $(target).each(function() {
+        var self = this;
+        var id = $(self).attr('id');
+
+        var picker = new Picker(document.getElementById(id), {
+            format: 'HH:mm',
+            controls: true,
+            headers: true,
+            date: new Date(date),
+            increment: {
+                minute: 10
+            },
+            text: {
+                title: '<span>時間を選択してください</span>'
+            },
+        });
+    })
+}
+
+$(document).on('click', '.js-time-picker', function() {
+    new TimePicker();
 });

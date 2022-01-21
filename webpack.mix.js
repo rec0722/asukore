@@ -1,6 +1,5 @@
-const { sass } = require('laravel-mix');
 const mix = require('laravel-mix');
-
+const webpack = require('webpack');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -13,27 +12,16 @@ const mix = require('laravel-mix');
  */
 
 mix
-    .js('resources/js/app.js', 'public/js')
-    .sourceMaps()
-    .autoload({
-        jquery: ['$', 'window.jQuery']
-    });
+    .js('resources/js/app.js', 'public/js/app.js');
 
 mix
     .scripts([
-            'resources/js/bundle.js'
+            'resources/js/bundle.js',
+            'resources/js/fullcalendar.js',
         ],
         'public/js/bundle.js'
-    )
-    .scripts([
-            'resources/js/fullcalendar.js'
-        ],
-        'public/js/fullcalendar.js'
     );
 
 mix
     .sass('resources/sass/style.scss', 'public/css')
-    .sass('resources/sass/app.scss', 'public/css', []);
-
-//.sass('resources/sass/app.scss', 'public/css');
-//.postCss('resources/css/app.css', 'public/css', []);
+    .sass('resources/sass/app.scss', 'public/css');

@@ -4,8 +4,10 @@
 
 $fontColor: rgba(0, 0, 0, 0.87);
 $backColor: #F9F9F9;
+$bodyColor: #FCFCFC;
 $whiteColor: #FFFFFF;
-$footerColor: #c7dcc7;
+$footerColor: #26A69A;
+$accentColor: #FFBD4A;
 $errorColor: #E35259;
 $headline1: 24px;
 $headline2: 16px;
@@ -32,15 +34,15 @@ html {
         position: relative;
         height: 100%;
         margin: 0;
-        background-color: $backColor !important;
+        background-color: $bodyColor !important;
         .container2 {
             justify-content: center;
             align-items: center;
             min-height: calc(100% - 114px);
         }
         .container3 {
-            width: 90% !important;
-            max-width: 1440px;
+            width: 95% !important;
+            max-width: 1280px;
             margin: 0 auto;
         }
     }
@@ -231,7 +233,7 @@ html {
 --------------------------------------------------------------*/
 
 .content {
-    margin: 2em 0;
+    margin: 4em 0;
     padding: 2em;
     border-radius: 10px;
     background-color: $whiteColor;
@@ -307,41 +309,6 @@ html {
     }
 }
 
-#dashboard {
-    width: 90%;
-    max-width: 1180px;
-    margin: 4em auto;
-}
-
-.report {
-    input:disabled {
-        color: $fontColor !important;
-    }
-    pre {
-        white-space: pre-wrap;
-    }
-    .headline2 {
-        padding: .25em .5em .15em;
-        border-left: 3px solid $fontColor;
-        font-size: $headline2;
-        line-height: 1.4;
-    }
-    .report-table {
-        tbody {
-            .flex {
-                flex-wrap: wrap;
-                width: 100%;
-                .row {
-                    margin-bottom: 0;
-                    .s2 {
-                        margin-top: 15px;
-                    }
-                }
-            }
-        }
-    }
-}
-
 @media screen and (max-width: 992px) {
     .content {
         margin: 2em 0;
@@ -381,6 +348,79 @@ html {
             }
         }
     }
+}
+
+
+/*--------------------------------------------------------------
+>>> Report
+--------------------------------------------------------------*/
+
+.report {
+    input:disabled {
+        color: $fontColor !important;
+    }
+    pre {
+        white-space: pre-wrap;
+    }
+    .report-h1 {
+        margin-top: 2em;
+        font-size: $headline1;
+        font-weight: bold;
+        line-height: 1;
+    }
+    .report-h2 {
+        padding: 1em;
+        border-left: 5px dashed $accentColor;
+        background-color: $backColor;
+        font-size: $headline2;
+        font-weight: bold;
+        line-height: 1;
+    }
+    .report-type-box {
+        justify-content: space-around;
+        margin-bottom: 2em;
+        padding: .5em;
+        background-color: $backColor;
+        p {
+            margin: 0 0 0 1em;
+            font-size: .85em;
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+    .report-type-block {
+        display: block;
+    }
+    .report-type-none {
+        display: none;
+    }
+    .report-table {
+        tbody {
+            .flex {
+                flex-wrap: wrap;
+                width: 100%;
+                .row {
+                    margin-bottom: 0;
+                    .s2 {
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+    .report-images {
+        width: 100%;
+        margin: 1em 0;
+        line-height: 1;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
     .report {
         font-size: .95em;
         input,
@@ -428,6 +468,17 @@ html {
             }
         }
     }
+}
+
+
+/*--------------------------------------------------------------
+>>> Dashboard
+--------------------------------------------------------------*/
+
+#dashboard {
+    width: 90%;
+    max-width: 1180px;
+    margin: 4em auto;
 }
 
 

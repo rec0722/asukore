@@ -16,8 +16,8 @@ class CreateReportActionsTable extends Migration
         Schema::create('report_actions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('report_id')->nullable();
-            $table->time('time1')->nullable();
-            $table->time('time2')->nullable();
+            $table->string('time1', 8)->nullable();
+            $table->string('time2', 8)->nullable();
             $table->string('customer', 11)->nullable();
             $table->string('action')->nullable();
             $table->string('approach', 50)->nullable();
