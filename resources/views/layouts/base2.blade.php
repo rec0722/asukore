@@ -31,8 +31,8 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.10.0/main.js"></script>
   <script src="{{ asset('dist/moment.js') }}"></script>
   <script src="{{ asset('dist/picker.min.js') }}"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
-  <script src="{{ asset('js/bundle.js') }}"></script>
+  <script src="{{ asset('js/app.220121.js') }}"></script>
+  <script src="{{ asset('js/bundle..220121js') }}"></script>
 </body>
 
 </html>
