@@ -11,6 +11,12 @@
   box-sizing: border-box;
 }
 
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 html {
   height: 100%;
 }
@@ -20,9 +26,13 @@ html body {
   margin: 0;
   background-color: #FCFCFC !important;
 }
+html body .container {
+  width: 95%;
+}
 html body .container2 {
   justify-content: center;
   align-items: center;
+  width: 95%;
   min-height: calc(100% - 114px);
 }
 html body .container3 {
@@ -332,6 +342,9 @@ html body .container3 {
 .report .report-table tbody .flex .row .s2 {
   margin-top: 15px;
 }
+.report .report-table tbody .js-time-picker {
+  cursor: pointer;
+}
 .report .report-images {
   width: 100%;
   margin: 1em 0;
@@ -340,6 +353,13 @@ html body .container3 {
 .report .report-images img {
   max-width: 100%;
   height: auto;
+}
+.report .report-image-list li {
+  padding: 0.5em 1em;
+  background-color: #F9F9F9;
+}
+.report .report-image-list li button {
+  margin-left: 2em;
 }
 
 @media screen and (max-width: 992px) {
@@ -392,7 +412,7 @@ html body .container3 {
   }
   .report .input-field input,
 .report .input-field textarea {
-    min-height: 3.6em;
+    min-height: 3em;
   }
 }
 /*--------------------------------------------------------------

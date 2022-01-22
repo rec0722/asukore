@@ -43,6 +43,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 // Report
 Route::resource('report', ReportsController::class)->middleware('auth:web');
 Route::post('/report/search', [ReportsController::class, 'search'])->middleware('auth:web')->name('report.search');
+Route::post('/delete-img', [ReportsController::class, 'deleteImg'])->middleware('auth:web');
 // Master
 Route::resource('mst_company', MstCompaniesController::class)->middleware('auth:web');
 Route::resource('mst_dept', MstDeptsController::class)->middleware('auth:web');

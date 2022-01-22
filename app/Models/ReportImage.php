@@ -65,4 +65,17 @@ class ReportImage extends Model
     }
     return $url;
   }
+
+  /**
+   * Get the delete URL of the picture
+   */
+  public static function getDeleteUrl($data)
+  {
+    if (!empty($data)) {
+      $url = 'report/' . $data->report_id . '/' . $data->file;
+    } else {
+      $url = null;
+    }
+    return $url;
+  }
 }

@@ -21,6 +21,7 @@
         <p>{{ optional($report['report_date'])->format('Y年m月d日') }}</p>
       </div>
     </div>
+    <div class="divider"></div>
     <h2 class="report-h1">今日の作業内容</h2>
     <div class="report-type-box">
       <div class="row input-field">
@@ -69,11 +70,11 @@
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', $actions[$i]['id']) }}
               <div class="col s5 input1">
-                {{ Form::text('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'timepicker']) }}
+                {{ Form::text('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time js-time-picker', 'id' => 'time1_' . $i,]) }}
               </div>
               <label class="col s2">〜</label>
               <div class="col s5 input2">
-                {{ Form::text('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'timepicker']) }}
+                {{ Form::text('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time js-time-picker', 'id' => 'time2_' . $i,]) }}
               </div>
             </td>
             <td class="col-12 col-md-2 input3">
@@ -104,7 +105,7 @@
       </table>
     </div>
     <div class="row {{ $item['pic'] }}" id="pic-box">
-    <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 画像報告</label>
+      <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 画像報告</label>
       <div class="file-field input-field">
         <div class="btn">
           <span>ファイル</span>
@@ -114,19 +115,29 @@
           <input class="file-path validate" type="text" placeholder="画像をアップロード">
         </div>
       </div>
+      @if (!is_null($images))
+      <ul class="report-image-list">
+        @for ($i = 0; $i < count($images); $i++)
+        <li id="block{{ $images[$i]['id'] }}">
+          ・<a href="{{ $images[$i]['url'] }}" target="_blank">アップロード画像{{ $i + 1 }}</a>
+          {{ Form::button('<i class="material-icons">delete</i>', ['class' => 'btn btn-floating grey deleteImg', 'id' => $images[$i]['id'], 'type' => 'button']) }}
+        </li>
+        @endfor
+      </ul>
+      @endif
     </div>
     <h2 class="report-h1">明日の予定</h2>
     <div class="row">
       <div class="input-field col s12">
-        {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '明日の予定や今日完了できなかった仕事を書いてください']) }}
-        {{ Form::label('tomorrow_plan', '明日の予定') }}
+        {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
+        <label for="tomorrow_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 明日の予定や今日未完了の仕事を書いてください</label>
       </div>
     </div>
     <h2 class="report-h1">特記事項</h2>
     <div class="row">
       <div class="input-field col s12">
-        {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '上記の報告以外で気になる点や覚えた内容があれば書いてください']) }}
-        {{ Form::label('notices', '特記事項') }}
+        {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
+        <label for="notices" class="red-text text-lighten-3"><i class="material-icons">create</i> 気になる点や覚えた内容があれば書いてください</label>
       </div>
     </div><!-- /.report Form -->
 

@@ -33,8 +33,8 @@ $(function() {
         clone.find('.input2 input').attr('name', 'action_list[' + itemV + '][time2]');
         clone.find('.input2 input').attr('id', 'time2_' + itemV).val('');
         clone.find('.input3 input').attr('name', 'action_list[' + itemV + '][customer]').val('');
-        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').css({ 'height': '3em' }).val('');
-        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').css({ 'height': '3em' }).val('');
+        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').css({ 'height': 'none' }).val('');
+        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').css({ 'height': 'none' }).val('');
         clone.find('.button input').attr('name', 'action_list[' + itemV + '][delete_flg]');
         clone.find('.button input').attr('id', 'flg' + itemV).val('');
         clone.find('.button button').attr('id', itemV);
@@ -58,6 +58,36 @@ $(function() {
             deleteFlg.value = '1';
         }
     });
+    // 画像の削除
+    $(document).on('click', '.deleteImg', function(obj) {
+        let id = obj.target.parentNode.id;
+        if (id !== '') {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+            });
+            $.ajax({
+                    //POST通信
+                    type: 'POST',
+                    url: '/delete-img',
+                    dataType: 'json',
+                    data: {
+                        id: id,
+                    },
+                })
+                //通信が成功したとき
+                .done(function(data) {
+                    let item = $('#block' + id);
+                    item.remove();
+                    alert('画像を削除しました。');
+                })
+                //通信が失敗したとき
+                .fail((error) => {
+                    console.log(error.statusText);
+                });
+        };
+    });
 });
 
 /* ===================================================================
@@ -77,7 +107,7 @@ $(function() {
             });
             $.ajax({
                     //POST通信
-                    type: 'post',
+                    type: 'POST',
                     url: '/get_dept',
                     dataType: 'json',
                     data: {

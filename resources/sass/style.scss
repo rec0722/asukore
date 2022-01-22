@@ -5,6 +5,7 @@
 $fontColor: rgba(0, 0, 0, 0.87);
 $backColor: #F9F9F9;
 $bodyColor: #FCFCFC;
+$borderColor: #EEEEEE;
 $whiteColor: #FFFFFF;
 $footerColor: #26A69A;
 $accentColor: #FFBD4A;
@@ -28,6 +29,12 @@ $headline2: 16px;
     }
 }
 
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
 html {
     height: 100%;
     body {
@@ -35,9 +42,13 @@ html {
         height: 100%;
         margin: 0;
         background-color: $bodyColor !important;
+        .container {
+            width: 95%;
+        }
         .container2 {
             justify-content: center;
             align-items: center;
+            width: 95%;
             min-height: calc(100% - 114px);
         }
         .container3 {
@@ -414,6 +425,9 @@ html {
                     }
                 }
             }
+            .js-time-picker {
+                cursor: pointer;
+            }
         }
     }
     .report-images {
@@ -423,6 +437,15 @@ html {
         img {
             max-width: 100%;
             height: auto;
+        }
+    }
+    .report-image-list {
+        li {
+            padding: .5em 1em;
+            background-color: $backColor;
+            button {
+                margin-left: 2em;
+            }
         }
     }
 }
@@ -474,7 +497,7 @@ html {
         .input-field {
             input,
             textarea {
-                min-height: 3.6em;
+                min-height: 3em;
             }
         }
     }

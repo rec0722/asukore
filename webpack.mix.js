@@ -12,14 +12,14 @@ const webpack = require('webpack');
  */
 
 mix
-    .js('resources/js/app.js', 'public/js/app.220121.js');
+    .js('resources/js/app.js', 'public/js/app.js');
 
 mix
     .scripts([
             'resources/js/bundle.js',
             'resources/js/fullcalendar.js',
         ],
-        'public/js/bundle.220121.js'
+        'public/js/bundle.js'
     );
 
 mix

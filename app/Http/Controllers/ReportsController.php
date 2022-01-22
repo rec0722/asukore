@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class ReportsController extends Controller
@@ -237,6 +238,10 @@ class ReportsController extends Controller
     for ($i = 0; $i < count($actions); $i++) {
       $actions[$i]['time'] = ReportAction::getActionTime($actions[$i]);
     }
+    $images = ReportImage::where('report_id', $id)->orderBy('sort', 'asc')->get();
+    for ($i = 0; $i < count($images); $i++) {
+      $images[$i]['url'] = ReportImage::getFileUrl($images[$i], $id);
+    }
     $userInfo = User::findOrFail(Auth::user()->id);
     $item = array();
     $item = Report::getInputType($item, 'free', $userInfo);
@@ -250,6 +255,7 @@ class ReportsController extends Controller
           'id',
           'report',
           'actions',
+          'images',
           'item'
         )
       );
@@ -323,6 +329,21 @@ class ReportsController extends Controller
   }
 
   /**
+   * Delete Images
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function deleteImg(Request $request)
+  {
+    $images = ReportImage::where('id', $request->id)->first();
+    $images['url'] = ReportImage::getDeleteUrl($images);
+    Storage::disk('public')->delete($images['url']);
+    $images->delete();
+    return $images;
+  }
+
+  /**
    * Display a listing of the resource.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -376,11 +397,6 @@ class ReportsController extends Controller
       $param = [':id' => 0];
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
-      /*
-      $reports = Report::whereIn('dept_id', function ($query) use ($user) {
-        $query->select('dept_id')->from('user_depts')->where('user_id', $user['id']);
-      })->orderBy('report_date', 'desc')->get();
-      */
       $reports = Report::whereRaw($matchVar, $matchParam)
                   ->orderByRaw('report_date desc, dept_id desc')
                   ->get();
