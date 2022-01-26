@@ -20,7 +20,7 @@
       <div class="divider"></div>
       <div class="section">
         <h2 class="report-h2">今日の作業内容</h2>
-        <pre>{{ $report->todays_plan }}</pre>
+        <p class="report-text">{{ $report->todays_plan }}</p>
       </div>
       @if (!empty($actions))
       <div class="divider"></div>
@@ -50,12 +50,12 @@
       @endif
       <div class="section">
         <h2 class="report-h2">明日の予定</h2>
-        <pre>{{ $report->tomorrow_plan }}</pre>
+        <p class="report-text">{{ $report->tomorrow_plan }}</p>
       </div>
       <div class="divider"></div>
       <div class="section">
         <h2 class="report-h2">特記事項</h2>
-        <pre>{{ $report->notices }}</pre>
+        <p class="report-text">{{ $report->notices }}</p>
       </div>
     </div>
 

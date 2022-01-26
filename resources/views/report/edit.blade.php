@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="divider"></div>
-    <h2 class="report-h1">今日の作業内容</h2>
+    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 今日の作業内容</h2>
     <div class="report-type-box">
       <div class="row input-field">
         <div class="col s12 l3">
@@ -48,11 +48,11 @@
     <div class="row {{ $item['free'] }}" id="free-box">
       <div class="input-field col s12">
         {{ Form::textarea('todays_plan', null, ['class' => 'materialize-textarea', 'id' => 'todays_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '作業内容を入力してください']) }}
-        <label for="todays_plan" class="green-text"><i class="material-icons">create</i> フリー入力</label>
+        <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> フリー入力</label>
       </div>
     </div>
     <div class="row {{ $item['time'] }}" id="time-box">
-      <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 時間制入力</label>
+      <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 時間制入力</label>
       <table id="tableAction" class="report-table">
         <thead>
           <tr class="flex">
@@ -86,8 +86,8 @@
             <td class="col-12 col-md-3 input5">
               {{ Form::textarea('action_list[' . $i . '][approach]', $actions[$i]['approach'], ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => '契約・販売・作業・打ち合わせ結果']) }}
             </td>
-            <td class="col-12 col-md-1 button center-align">
-              {{ Form::button('<i class="material-icons">remove</i>', ['class' => 'waves-effect waves-light btn btn-floating deleteItem', 'id' => $i, 'type' => 'button']) }}
+            <td class="col-12 col-md-1 button right-align">
+              {{ Form::button('<i class="material-icons">clear</i>', ['class' => 'deleteItem', 'id' => $i, 'type' => 'button']) }}
               {{ Form::hidden('action_list[' . $i . '][delete_flg]', 0, ['id' => 'flg' . $i]) }}
             </td>
             </tr>
@@ -96,7 +96,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td class="right-align" colspan="5">
+            <td class="center-align" colspan="5">
               {{ Form::button('<i class="material-icons">add</i>', ['class' => 'waves-effect waves-light btn btn-floating addItem', 'type' => 'button']) }}
               {{ Form::hidden('itemNum', $i, ['id' => 'getItemNum']) }}
             </td>
@@ -105,7 +105,7 @@
       </table>
     </div>
     <div class="row {{ $item['pic'] }}" id="pic-box">
-      <label for="todays_plan" class="green-text"><i class="material-icons">create</i> 画像報告</label>
+      <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 画像報告</label>
       <div class="file-field input-field">
         <div class="btn">
           <span>ファイル</span>
@@ -126,14 +126,14 @@
       </ul>
       @endif
     </div>
-    <h2 class="report-h1">明日の予定</h2>
+    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 明日の予定</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
         <label for="tomorrow_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 明日の予定や今日未完了の仕事を書いてください</label>
       </div>
     </div>
-    <h2 class="report-h1">特記事項</h2>
+    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 特記事項</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}

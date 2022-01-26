@@ -296,9 +296,6 @@ html body .container3 {
 .report input:disabled {
   color: rgba(0, 0, 0, 0.87) !important;
 }
-.report pre {
-  white-space: pre-wrap;
-}
 .report .report-h1 {
   margin-top: 2em;
   font-size: 24px;
@@ -332,6 +329,9 @@ html body .container3 {
 .report .report-type-none {
   display: none;
 }
+.report .report-text {
+  white-space: pre-wrap;
+}
 .report .report-table tbody .flex {
   flex-wrap: wrap;
   width: 100%;
@@ -344,6 +344,14 @@ html body .container3 {
 }
 .report .report-table tbody .js-time-picker {
   cursor: pointer;
+}
+.report .report-table tbody .deleteItem {
+  margin-top: 8px;
+  border: none;
+  background: transparent;
+}
+.report .report-table tbody .deleteItem i {
+  font-weight: bold;
 }
 .report .report-images {
   width: 100%;
@@ -394,6 +402,9 @@ html body .container3 {
   }
   .report .report-table tbody .flex .col-6 {
     padding: 5px 5px;
+  }
+  .report .report-table tbody .deleteItem {
+    margin-top: 0;
   }
 }
 @media screen and (max-width: 480px) {

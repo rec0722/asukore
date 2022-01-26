@@ -33,8 +33,8 @@ $(function() {
         clone.find('.input2 input').attr('name', 'action_list[' + itemV + '][time2]');
         clone.find('.input2 input').attr('id', 'time2_' + itemV).val('');
         clone.find('.input3 input').attr('name', 'action_list[' + itemV + '][customer]').val('');
-        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').css({ 'height': 'none' }).val('');
-        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').css({ 'height': 'none' }).val('');
+        clone.find('.input4 textarea').attr('name', 'action_list[' + itemV + '][action]').css({ 'height': '3em' }).val('');
+        clone.find('.input5 textarea').attr('name', 'action_list[' + itemV + '][approach]').css({ 'height': '3em' }).val('');
         clone.find('.button input').attr('name', 'action_list[' + itemV + '][delete_flg]');
         clone.find('.button input').attr('id', 'flg' + itemV).val('');
         clone.find('.button button').attr('id', itemV);
@@ -48,14 +48,17 @@ $(function() {
     });
     // 時間報告の行削除
     $(document).on('click', '.deleteItem', function(obj) {
-        let itemV = document.getElementById('getItemNum').value; // 個数を取得
-        if (itemV !== '1') {
-            const id = $(this).attr('id'); // 個数を取得
-            // 最後尾の行を複製
-            let tableRow = $('#tableAction').children('tbody').children('tr').eq(id);
-            tableRow.css({ 'display': 'none' });
-            let deleteFlg = document.getElementById('flg' + id);
-            deleteFlg.value = '1';
+        flg = window.confirm('削除してよろしいですか？');
+        if (flg === true) {
+            let itemV = document.getElementById('getItemNum').value; // 個数を取得
+            if (itemV !== '1') {
+                const id = $(this).attr('id'); // 個数を取得
+                // 最後尾の行を複製
+                let tableRow = $('#tableAction').children('tbody').children('tr').eq(id);
+                tableRow.css({ 'display': 'none' });
+                let deleteFlg = document.getElementById('flg' + id);
+                deleteFlg.value = '1';
+            }
         }
     });
     // 画像の削除

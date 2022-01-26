@@ -377,9 +377,6 @@ html {
     input:disabled {
         color: $fontColor !important;
     }
-    pre {
-        white-space: pre-wrap;
-    }
     .report-h1 {
         margin-top: 2em;
         font-size: $headline1;
@@ -413,6 +410,9 @@ html {
     .report-type-none {
         display: none;
     }
+    .report-text {
+        white-space: pre-wrap;
+    }
     .report-table {
         tbody {
             .flex {
@@ -427,6 +427,14 @@ html {
             }
             .js-time-picker {
                 cursor: pointer;
+            }
+            .deleteItem {
+                margin-top: 8px;
+                border: none;
+                background: transparent;
+                i {
+                    font-weight: bold;
+                }
             }
         }
     }
@@ -479,6 +487,9 @@ html {
                     .col-6 {
                         padding: 5px 5px;
                     }
+                }
+                .deleteItem {
+                    margin-top: 0;
                 }
             }
         }
