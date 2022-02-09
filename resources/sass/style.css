@@ -339,9 +339,6 @@ html body .container3 {
 .report .report-text {
   white-space: pre-wrap;
 }
-.report .report-table tbody td {
-  white-space: pre-wrap;
-}
 .report .report-table tbody .flex {
   flex-wrap: wrap;
   width: 100%;
@@ -369,6 +366,9 @@ html body .container3 {
 }
 .report .report-table tbody .deleteItem i {
   font-weight: bold;
+}
+.report .report-table .show-table td {
+  white-space: pre-wrap;
 }
 .report .report-images {
   width: 100%;

@@ -9,7 +9,8 @@
 
     {{ Form::open(['route' => 'report.search', 'name' => 'dashboard']) }}
       <div id="calendar"></div>
-      {{ Form::hidden('search[date]', null, ['id' => 'report_date']) }}
+      {{ Form::hidden('search[date1]', null, ['id' => 'report_date']) }}
+      {{ Form::hidden('search[date2]', null) }}
       {{ Form::hidden('search[dept]', null) }}
       {{ Form::hidden('search[employ]', null) }}
     {{ Form::close() }}

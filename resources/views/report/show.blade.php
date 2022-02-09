@@ -25,7 +25,7 @@
       @if (!empty($actions))
       <div class="divider"></div>
       <table class="report-table">
-        <tbody>
+        <tbody class="show-table">
 
           @foreach($actions as $act)
           <tr class="flex">

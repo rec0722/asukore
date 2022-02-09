@@ -424,9 +424,6 @@ html {
     }
     .report-table {
         tbody {
-            td {
-                white-space: pre-wrap;
-            }
             .flex {
                 flex-wrap: wrap;
                 width: 100%;
@@ -456,6 +453,11 @@ html {
                 i {
                     font-weight: bold;
                 }
+            }
+        }
+        .show-table {
+            td {
+                white-space: pre-wrap;
             }
         }
     }
