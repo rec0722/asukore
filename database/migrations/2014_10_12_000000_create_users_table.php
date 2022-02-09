@@ -22,9 +22,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(0);
-            $table->tinyInteger('input_free')->default(0);
-            $table->tinyInteger('input_time')->default(0);
-            $table->tinyInteger('input_pic')->default(0);
+            $table->tinyInteger('input_free')->default(0)->nullable();
+            $table->tinyInteger('input_time')->default(0)->nullable();
+            $table->tinyInteger('input_pic')->default(0)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

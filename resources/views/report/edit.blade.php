@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="divider"></div>
-    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 今日の作業内容</h2>
+    <h2 class="report-h1"><i class="material-icons red-text accent-2">lens</i> 今日の作業内容</h2>
     <div class="report-type-box">
       <div class="row input-field">
         <div class="col s12 l3">
@@ -56,10 +56,10 @@
       <table id="tableAction" class="report-table">
         <thead>
           <tr class="flex">
-            <th class="col-12 col-md-2">時間</th>
-            <th class="col-12 col-md-2">お客様名</th>
-            <th class="col-12 col-md-4">作業内容</th>
-            <th class="col-12 col-md-3">契約・販売・作業・打ち合わせ結果</th>
+          <th class="col-12 col-md-2">{{ $item['text1'] }}</th>
+            <th class="col-12 col-md-2">{{ $item['text2'] }}</th>
+            <th class="col-12 col-md-4">{{ $item['text3'] }}</th>
+            <th class="col-12 col-md-3">{{ $item['text4'] }}</th>
             <th class="col-12 col-md-1"></th>
           </tr>
         </thead>
@@ -70,21 +70,21 @@
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', $actions[$i]['id']) }}
               <div class="col s5 input1">
-                {{ Form::text('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time js-time-picker', 'id' => 'time1_' . $i,]) }}
+                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time @if (isMobile()) @endif', 'id' => 'time1_' . $i,]) }}
               </div>
               <label class="col s2">〜</label>
               <div class="col s5 input2">
-                {{ Form::text('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time js-time-picker', 'id' => 'time2_' . $i,]) }}
+                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time @if (isMobile()) @endif', 'id' => 'time2_' . $i,]) }}
               </div>
             </td>
             <td class="col-12 col-md-2 input3">
-              {{ Form::text('action_list[' . $i . '][customer]', $actions[$i]['customer'], ['class' => 'validate', 'placeholder' => 'お客様']) }}
+              {{ Form::text('action_list[' . $i . '][customer]', $actions[$i]['customer'], ['class' => 'validate', 'placeholder' => $item['text2']]) }}
             </td>
             <td class="col-12 col-md-4 input4">
-              {{ Form::textarea('action_list[' . $i . '][action]', $actions[$i]['action'], ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => '作業内容']) }}
+              {{ Form::textarea('action_list[' . $i . '][action]', $actions[$i]['action'], ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => $item['text3']]) }}
             </td>
             <td class="col-12 col-md-3 input5">
-              {{ Form::textarea('action_list[' . $i . '][approach]', $actions[$i]['approach'], ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => '契約・販売・作業・打ち合わせ結果']) }}
+              {{ Form::textarea('action_list[' . $i . '][approach]', $actions[$i]['approach'], ['class' => 'materialize-textarea', 'aria-multiline' => 'true', 'placeholder' => $item['text4']]) }}
             </td>
             <td class="col-12 col-md-1 button right-align">
               {{ Form::button('<i class="material-icons">clear</i>', ['class' => 'deleteItem', 'id' => $i, 'type' => 'button']) }}
@@ -126,14 +126,14 @@
       </ul>
       @endif
     </div>
-    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 明日の予定</h2>
+    <h2 class="report-h1"><i class="material-icons grey-text lighten-1">lens</i> 明日の予定</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('tomorrow_plan', null, ['class' => 'materialize-textarea', 'id' => 'tomorrow_plan', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}
         <label for="tomorrow_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 明日の予定や今日未完了の仕事を書いてください</label>
       </div>
     </div>
-    <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 特記事項</h2>
+    <h2 class="report-h1"><i class="material-icons amber-text lighten-1">lens</i> 特記事項</h2>
     <div class="row">
       <div class="input-field col s12">
         {{ Form::textarea('notices', null, ['class' => 'materialize-textarea', 'id' => 'notices', 'rows' => '4', 'aria-multiline' => 'true', 'placeholder' => '']) }}

@@ -1,6 +1,9 @@
 <?php
 // Login
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 // Report
 use App\Http\Controllers\ReportsController;
 // Master
@@ -25,20 +28,32 @@ use Illuminate\Support\Facades\Route;
 
 // Login
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-                ->middleware('guest')
-                ->name('login');
+  ->middleware('guest')
+  ->name('login');
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-                ->middleware('guest')
-                ->name('login');
+  ->middleware('guest')
+  ->name('login');
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+  ->middleware(['guest:' . config('fortify.guard')])
+  ->name('password.request');
+
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+  ->middleware(['guest:' . config('fortify.guard')])
+  ->name('password.reset');
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+  ->middleware(['guest:' . config('fortify.guard')])
+  ->name('password.email');
 
 Route::middleware(['auth:web', 'verified'])->get('/', function () {
-    return view('dashboard');
+  return view('dashboard');
 })->name('dashboard');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('auth:web')
-                ->name('logout');
+  ->middleware('auth:web')
+  ->name('logout');
 
 // Report
 Route::resource('report', ReportsController::class)->middleware('auth:web');
@@ -53,4 +68,3 @@ Route::patch('/mst_user/{id}/restore', [UsersController::class, 'restore'])->mid
 Route::delete('/mst_user/force_delete', [UsersController::class, 'forceDelete'])->name('mst_user.force_delete');
 Route::resource('mst_user', UsersController::class)->middleware('auth:web');
 Route::post('/get_dept', [UsersController::class, 'getDept'])->middleware('auth:web')->name('mst_user.dept');
-

@@ -36,6 +36,29 @@
       @enderror
     </div>
   </div>
+  <div class="divider"></div>
+  <h2 class="headline1">日報設定</h2>
+  <div class="row">
+    {{ Form::label('report_table', '時間制タイトル') }}
+    <table class="report-table">
+      <tbody>
+        <tr class="flex">
+          <th class="col-12 col-md-2">
+            {{ Form::text('report_text1', $data['report_text1'], ['class' => 'validate']) }}
+          </th>
+          <th class="col-12 col-md-2">
+            {{ Form::text('report_text2', $data['report_text2'], ['class' => 'validate']) }}
+          </th>
+          <th class="col-12 col-md-4">
+            {{ Form::text('report_text3', $data['report_text3'], ['class' => 'validate']) }}
+          </th>
+          <th class="col-12 col-md-4">
+            {{ Form::text('report_text4', $data['report_text4'], ['class' => 'validate']) }}
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="row">
     {{ Form::label('report_num', '報告行数') }}
     {{ Form::select('report_num',  $list['rowList'], null, ['class' => 'browser-default']) }}

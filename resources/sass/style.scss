@@ -50,6 +50,7 @@ html {
             align-items: center;
             width: 95%;
             min-height: calc(100% - 114px);
+            margin: 0 auto;
         }
         .container3 {
             width: 95% !important;
@@ -262,6 +263,14 @@ html {
         margin-bottom: 2em;
         padding: 2em;
         background-color: $backColor;
+        .row {
+            .col {
+                padding: 0;
+            }
+            span {
+                margin-top: 10px;
+            }
+        }
         .col-12 {
             input {
                 height: 3rem;
@@ -415,13 +424,22 @@ html {
     }
     .report-table {
         tbody {
+            td {
+                input {
+                    white-space: pre-wrap;
+                }
+            }
             .flex {
                 flex-wrap: wrap;
                 width: 100%;
                 .row {
                     margin-bottom: 0;
+                    .col {
+                        padding: 0;
+                    }
                     .s2 {
                         margin-top: 15px;
+                        text-align: center;
                     }
                 }
             }
@@ -557,6 +575,14 @@ html {
                 height: 48px;
                 margin-top: 2em;
                 padding: .5em 0;
+            }
+            .forgot {
+                margin-top: 1em;
+                font-size: .85em;
+                text-align: center;
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
     }

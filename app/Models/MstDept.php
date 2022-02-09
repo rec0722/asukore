@@ -24,6 +24,10 @@ class MstDept extends Model
   protected $fillable = [
     'company_id',
     'name',
+    'report_text1',
+    'report_text2',
+    'report_text3',
+    'report_text4',
     'report_num'
   ];
 
@@ -51,7 +55,7 @@ class MstDept extends Model
   {
     $depts = MstDept::get();
     $deptList = array(
-      '' => '部署選択'
+      '' => ''
     );
     foreach ($depts as $dept) {
       $var = array($dept->id => $dept->name);
@@ -67,7 +71,7 @@ class MstDept extends Model
   {
     $depts = MstDept::where('company_id', $user['company_id'])->get();
     $deptList = array(
-      '' => '部署名選択'
+      '' => ''
     );
     foreach ($depts as $dept) {
       $var = array($dept->id => $dept->name);
@@ -129,5 +133,36 @@ class MstDept extends Model
       $deptList = $deptList + $var;
     }
     return $deptList;
+  }
+
+  /**
+   * [data]------------------------------------------
+   */
+  /**
+   * Get the default Report Table
+   */
+  public static function getReportTableDefault()
+  {
+    $data = [
+      'report_text1' => '時間',
+      'report_text2' => 'お客様名',
+      'report_text3' => '作業内容',
+      'report_text4' => '契約・販売・作業・打ち合わせ結果'
+    ];
+    return $data;
+  }
+
+  /**
+   * Get the default Report Table
+   */
+  public static function getReportTableData($data)
+  {
+    $data = [
+      'text1' => $data['report_text1'],
+      'text2' => $data['report_text2'],
+      'text3' => $data['report_text3'],
+      'text4' => $data['report_text4']
+    ];
+    return $data;
   }
 }

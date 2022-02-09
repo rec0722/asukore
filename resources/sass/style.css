@@ -34,6 +34,7 @@ html body .container2 {
   align-items: center;
   width: 95%;
   min-height: calc(100% - 114px);
+  margin: 0 auto;
 }
 html body .container3 {
   width: 95% !important;
@@ -194,6 +195,12 @@ html body .container3 {
   padding: 2em;
   background-color: #F9F9F9;
 }
+.content .search-box .row .col {
+  padding: 0;
+}
+.content .search-box .row span {
+  margin-top: 10px;
+}
 .content .search-box .col-12 input {
   height: 3rem;
   margin: 0;
@@ -332,6 +339,9 @@ html body .container3 {
 .report .report-text {
   white-space: pre-wrap;
 }
+.report .report-table tbody td input {
+  white-space: pre-wrap;
+}
 .report .report-table tbody .flex {
   flex-wrap: wrap;
   width: 100%;
@@ -339,8 +349,12 @@ html body .container3 {
 .report .report-table tbody .flex .row {
   margin-bottom: 0;
 }
+.report .report-table tbody .flex .row .col {
+  padding: 0;
+}
 .report .report-table tbody .flex .row .s2 {
   margin-top: 15px;
+  text-align: center;
 }
 .report .report-table tbody .js-time-picker {
   cursor: pointer;
@@ -466,6 +480,14 @@ html body .container3 {
   height: 48px;
   margin-top: 2em;
   padding: 0.5em 0;
+}
+#login .login-inner .login-form .forgot {
+  margin-top: 1em;
+  font-size: 0.85em;
+  text-align: center;
+}
+#login .login-inner .login-form .forgot:hover {
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 560px) {

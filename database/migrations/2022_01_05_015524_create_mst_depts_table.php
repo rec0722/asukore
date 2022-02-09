@@ -18,6 +18,10 @@ class CreateMstDeptsTable extends Migration
             $table->foreignId('company_id')->nullable();
             $table->string('name', 25);
             $table->integer('report_type')->length('1')->nullable();
+            $table->string('report_text1', 11)->nullable();
+            $table->string('report_text2', 11)->nullable();
+            $table->string('report_text3', 25)->nullable();
+            $table->string('report_text4', 25)->nullable();
             $table->integer('report_num')->length('2')->nullable();
             $table->timestamps();
             $table->softDeletes();

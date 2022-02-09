@@ -44,11 +44,13 @@ class MstDeptsController extends Controller
   {
     $list['companyList'] = MstCompany::companyList();
     $list['rowList'] = MstDept::reportRow();
+    $data = MstDept::getReportTableDefault();
 
     return view(
       'mst_dept.create',
       compact(
-        'list'
+        'list',
+        'data'
       )
     );
   }
@@ -98,6 +100,7 @@ class MstDeptsController extends Controller
   public function edit($id)
   {
     $dept = MstDept::findOrFail($id);
+    MstDept::getReportTableData($dept);
     $list['companyList'] = MstCompany::companyList();
     $list['rowList'] = MstDept::reportRow();
 

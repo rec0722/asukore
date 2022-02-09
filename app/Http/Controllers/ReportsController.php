@@ -73,7 +73,8 @@ class ReportsController extends Controller
     }
     // 検索
     $item = [
-      'date' => '',
+      'date1' => '',
+      'date2' => '',
       'dept' => '',
       'employ' => ''
     ];
@@ -99,6 +100,10 @@ class ReportsController extends Controller
     $user = Auth::user();
     $item['date'] = date('Y-m-d');
     $item['rows'] = MstDept::findOrFail($user->dept_id)->report_num;
+    $item['text1'] = MstDept::findOrFail($user->dept_id)->report_text1;
+    $item['text2'] = MstDept::findOrFail($user->dept_id)->report_text2;
+    $item['text3'] = MstDept::findOrFail($user->dept_id)->report_text3;
+    $item['text4'] = MstDept::findOrFail($user->dept_id)->report_text4;
     $report = Report::whereRaw(
       'user_id = :user_id AND report_date = :report_date',
       [
@@ -244,6 +249,10 @@ class ReportsController extends Controller
     }
     $userInfo = User::findOrFail(Auth::user()->id);
     $item = array();
+    $item['text1'] = MstDept::findOrFail(Auth::user()->dept_id)->report_text1;
+    $item['text2'] = MstDept::findOrFail(Auth::user()->dept_id)->report_text2;
+    $item['text3'] = MstDept::findOrFail(Auth::user()->dept_id)->report_text3;
+    $item['text4'] = MstDept::findOrFail(Auth::user()->dept_id)->report_text4;
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
@@ -353,7 +362,8 @@ class ReportsController extends Controller
   {
     // 検索結果
     $item = [
-      'date' => $request->search['date'],
+      'date1' => $request->search['date1'],
+      'date2' => $request->search['date2'],
       'dept' => $request->search['dept'],
       'employ' => $request->search['employ'],
     ];
@@ -372,9 +382,22 @@ class ReportsController extends Controller
     $match = [];
     $matchVar = '';
     $matchParam = [];
-    if (!empty($item['date'])) {
+    if (!empty($item['date1']) && !empty($item['date2'])) {
+      $var = ' AND report_date BETWEEN :report_date1 AND :report_date2 ';
+      $param = [
+        ':report_date1' => $item['date1'],
+        ':report_date2' => $item['date2']
+      ];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    } else if (!empty($item['date1']) && empty($item['date2'])) {
       $var = ' AND report_date = :report_date';
-      $param = [':report_date' => $item['date']];
+      $param = [':report_date' => $item['date1']];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    } else if (empty($item['date1']) && !empty($item['date2'])) {
+      $var = ' AND report_date = :report_date';
+      $param = [':report_date' => $item['date2']];
       $matchVar = $matchVar . $var;
       $matchParam = $matchParam + $param;
     }

@@ -45,7 +45,7 @@ class ReportImage extends Model
       ->resize(1280, null, function ($constraint) {
         $constraint->aspectRatio();
         $constraint->upsize();
-      })->encode();
+      })->orientate()->encode();
     Storage::put('public/report/' . $id . '/' . $attachName, $attach);
     return $attachName;
   }

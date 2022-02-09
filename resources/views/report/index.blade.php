@@ -14,11 +14,21 @@
   <!-- search Box -->
   {{ Form::open(['route' => 'report.search']) }}
   <div class="search-box flex">
-    <div class="col-12 col-md-3">
-      {{ Form::text('search[date]', $item['date'], ['class' => 'datepicker', 'placeholder' => '日付選択']) }}
+    <div class="col-12 col-md-4">
+      {{ Form::label('search', '日付検索') }}
+      <div class="row">
+        <div class="col s5">
+          {{ Form::text('search[date1]', $item['date1'], ['class' => 'datepicker']) }}
+        </div>
+        <span class="col s1 center-align">〜</span>
+        <div class="col s5">
+          {{ Form::text('search[date2]', $item['date2'], ['class' => 'datepicker']) }}
+        </div>
+      </div>
     </div>
     <div class="col-12 col-md-3">
       @if ($user['role'] === 8)
+      {{ Form::label('search', '部署検索') }}
       {{ Form::select('search[dept]', $search['deptSelect'], $item['dept'], ['class' => 'browser-default']) }}
       @else
       {{ Form::hidden('search[dept]', null) }}
@@ -26,12 +36,13 @@
     </div>
     <div class="col-12 col-md-3">
       @if ($user['role'] === 8)
+      {{ Form::label('search', '社員検索') }}
       {{ Form::select('search[employ]', $search['userSelect'], $item['employ'], ['class' => 'browser-default']) }}
       @else
       {{ Form::hidden('search[employ]', null) }}
       @endif
     </div>
-    <div class="col-12 col-md-3 search-btn">
+    <div class="col-12 col-md-2 search-btn">
       {{ Form::button('検 索', ['class' => 'waves-effect waves-light btn', 'type' => 'submit']) }}
     </div>
   </div>

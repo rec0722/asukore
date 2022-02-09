@@ -18,7 +18,7 @@ class CreateReportActionsTable extends Migration
             $table->foreignId('report_id')->nullable();
             $table->string('time1', 8)->nullable();
             $table->string('time2', 8)->nullable();
-            $table->string('customer', 11)->nullable();
+            $table->string('customer', 25)->nullable();
             $table->string('action')->nullable();
             $table->string('approach', 50)->nullable();
             $table->timestamps();

@@ -1,13 +1,13 @@
 @extends( 'layouts.base2' )
 
-@section( 'title', 'ログイン画面')
+@section( 'title', 'パスワードリセットメール')
 
 @section( 'content' )
 
 <div class="container2 flex">
   <section id="login" class="flex">
     <div class="login-inner z-depth-1">
-      <h1 class="login-title">ログイン</h1>
+      <h1 class="login-title">パスワードをリセットする</h1>
       <div class="login-error">
         @if ($errors->any())
         <ul>
@@ -20,16 +20,11 @@
 
       <!-- login form -->
       <div class="login-form">
-        {{ Form::open(['route' => 'login']) }}
+        {{ Form::open(['route' => 'password.email']) }}
         @csrf
 
         {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'メールアドレス', 'required', 'autofocus']) }}
-        {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'パスワード', 'required']) }}
-        {{ Form::button('ログイン', ['class' => 'waves-effect waves-light btn', 'id' => 'login-button', 'type' => 'submit']) }}
-
-        <div class="forgot">
-          <a href="{{ route('password.request') }}">パスワードを忘れた方はこちら</a>
-        </div>
+        {{ Form::button('パスワードリセットするリンクを送る', ['class' => 'waves-effect waves-light btn', 'type' => 'submit']) }}
 
         {{ Form::close() }}
       </div><!-- /.login form -->

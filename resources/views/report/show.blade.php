@@ -19,7 +19,7 @@
       </div>
       <div class="divider"></div>
       <div class="section">
-        <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 今日の作業内容</h2>
+        <h2 class="report-h1"><i class="material-icons red-text accent-2">lens</i> 今日の作業内容</h2>
         <p class="report-text">{{ $report->todays_plan }}</p>
       </div>
       @if (!empty($actions))
@@ -49,12 +49,12 @@
       @endforeach
       @endif
       <div class="section">
-        <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 明日の予定</h2>
+        <h2 class="report-h1"><i class="material-icons grey-text lighten-1">lens</i> 明日の予定</h2>
         <p class="report-text">{{ $report->tomorrow_plan }}</p>
       </div>
       <div class="divider"></div>
       <div class="section">
-        <h2 class="report-h1"><i class="material-icons red-text lighten-1">lens</i> 特記事項</h2>
+        <h2 class="report-h1"><i class="material-icons amber-text lighten-1">lens</i> 特記事項</h2>
         <p class="report-text">{{ $report->notices }}</p>
       </div>
     </div>
