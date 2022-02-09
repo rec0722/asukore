@@ -70,11 +70,11 @@
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', $actions[$i]['id']) }}
               <div class="col s5 input1">
-                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time @if (isMobile()) @endif', 'id' => 'time1_' . $i,]) }}
+                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time ' . $item['agent'], 'id' => 'time1_' . $i, 'step' => '300']) }}
               </div>
               <label class="col s2">〜</label>
               <div class="col s5 input2">
-                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time @if (isMobile()) @endif', 'id' => 'time2_' . $i,]) }}
+                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time ' . $item['agent'], 'id' => 'time2_' . $i, 'step' => '300']) }}
               </div>
             </td>
             <td class="col-12 col-md-2 input3">

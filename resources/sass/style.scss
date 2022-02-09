@@ -425,9 +425,7 @@ html {
     .report-table {
         tbody {
             td {
-                input {
-                    white-space: pre-wrap;
-                }
+                white-space: pre-wrap;
             }
             .flex {
                 flex-wrap: wrap;
@@ -436,6 +434,11 @@ html {
                     margin-bottom: 0;
                     .col {
                         padding: 0;
+                    }
+                    .s5 {
+                        input[type="time"]::-webkit-calendar-picker-indicator {
+                            background: none;
+                        }
                     }
                     .s2 {
                         margin-top: 15px;

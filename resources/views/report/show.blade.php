@@ -67,7 +67,7 @@
       @endif
     </div>
   </div>
-  <div>
+  <div class="row">
     <div class="col s6">
       @if (!is_null($report['prev']))
       <a href="{{ route('report.show', $report->prev) }}" class="waves-effect waves-teal btn grey">

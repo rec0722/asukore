@@ -339,7 +339,7 @@ html body .container3 {
 .report .report-text {
   white-space: pre-wrap;
 }
-.report .report-table tbody td input {
+.report .report-table tbody td {
   white-space: pre-wrap;
 }
 .report .report-table tbody .flex {
@@ -351,6 +351,9 @@ html body .container3 {
 }
 .report .report-table tbody .flex .row .col {
   padding: 0;
+}
+.report .report-table tbody .flex .row .s5 input[type=time]::-webkit-calendar-picker-indicator {
+  background: none;
 }
 .report .report-table tbody .flex .row .s2 {
   margin-top: 15px;

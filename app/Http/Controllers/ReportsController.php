@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Agent\Agent;
 use Throwable;
 
 class ReportsController extends Controller
@@ -115,6 +116,13 @@ class ReportsController extends Controller
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
+    // スマホを判定し、時間入力方式を決定
+    $agent = new Agent();
+    if ($agent->isMobile()) {
+      $item['agent'] = 'js-time-picker';
+    } else {
+      $item['agent'] = '';
+    }
 
     if (!is_null($report)) {
       return redirect()->route('report.edit', $report->id);
@@ -256,6 +264,13 @@ class ReportsController extends Controller
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
+    // スマホを判定し、時間入力方式を決定
+    $agent = new Agent();
+    if ($agent->isMobile()) {
+      $item['agent'] = 'js-time-picker';
+    } else {
+      $item['agent'] = '';
+    }
 
     return
       view(
