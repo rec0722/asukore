@@ -117,12 +117,7 @@ class ReportsController extends Controller
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
     // スマホを判定し、時間入力方式を決定
-    $agent = new Agent();
-    if ($agent->isMobile()) {
-      $item['agent'] = 'js-time-picker';
-    } else {
-      $item['agent'] = '';
-    }
+    $item['agent'] = new Agent();
 
     if (!is_null($report)) {
       return redirect()->route('report.edit', $report->id);
@@ -265,8 +260,7 @@ class ReportsController extends Controller
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
     // スマホを判定し、時間入力方式を決定
-    $agent = new Agent();
-    $item['agent'] = $agent;
+    $item['agent'] = new Agent();
 
     return
       view(
@@ -432,24 +426,24 @@ class ReportsController extends Controller
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = Report::whereRaw($matchVar, $matchParam)
-                  ->orderByRaw('report_date desc, dept_id desc')
-                  ->get();
+        ->orderByRaw('report_date desc, dept_id desc')
+        ->get();
     } elseif ($user['role'] === 4) {
       $var = 'dept_id = :dept_id';
       $param = [':dept_id' => $user['dept_id']];
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = Report::whereRaw($matchVar, $matchParam)
-                  ->orderByRaw('report_date desc, dept_id desc')
-                  ->get();
+        ->orderByRaw('report_date desc, dept_id desc')
+        ->get();
     } else {
       $var = 'user_id = :user_id';
       $param = [':user_id' => $user['id']];
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = Report::whereRaw($matchVar, $matchParam)
-                  ->orderBy('report_date', 'desc')
-                  ->get();
+        ->orderBy('report_date', 'desc')
+        ->get();
     }
 
     return view(
