@@ -70,11 +70,19 @@
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', $actions[$i]['id']) }}
               <div class="col s5 input1">
-                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'time ' . $item['agent'], 'id' => 'time1_' . $i]) }}
+                @if ($item['agent']->isMobile())
+                {{ Form::text('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'js-time-picker', 'id' => 'time1_' . $i]) }}
+                @else
+                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => '', 'id' => 'time1_' . $i]) }}
+                @endif
               </div>
               <label class="col s2">〜</label>
               <div class="col s5 input2">
-                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'time ' . $item['agent'], 'id' => 'time2_' . $i]) }}
+                @if ($item['agent']->isMobile())
+                {{ Form::text('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'js-time-picker', 'id' => 'time2_' . $i]) }}
+                @else
+                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => '', 'id' => 'time2_' . $i]) }}
+                @endif
               </div>
             </td>
             <td class="col-12 col-md-2 input3">

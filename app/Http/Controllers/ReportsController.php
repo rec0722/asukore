@@ -266,11 +266,7 @@ class ReportsController extends Controller
     $item = Report::getInputType($item, 'pic', $userInfo);
     // スマホを判定し、時間入力方式を決定
     $agent = new Agent();
-    if ($agent->isMobile()) {
-      $item['agent'] = 'js-time-picker';
-    } else {
-      $item['agent'] = '';
-    }
+    $item['agent'] = $agent;
 
     return
       view(

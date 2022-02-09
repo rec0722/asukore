@@ -197,13 +197,6 @@ $(function() {
             weekdaysAbbrev: ['日', '月', '火', '水', '木', '金', '土']
         }
     });
-    /*
-    $(this).timepicker({
-        autoClose: true,
-        twelveHour: false,
-        options: 'step',
-    });
-    */
 });
 
 function TimePicker() {
