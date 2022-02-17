@@ -56,12 +56,15 @@
     <div class="col s12 l6">
       {{ Form::label('role', '役職') }}
       <div class="input-field">
-        @foreach ($user['roleList'] as $key => $val)
+        @foreach ($user['roleList'] as $role)
         <p>
           <label>
-            {{ Form::radio('role', $key, ['class' => 'with-gap', 'id' => 'role' . $key]) }}
-            <span>{{ $val }}</span>
+            {{ Form::radio('role', $role['id'], ['class' => 'with-gap', 'id' => 'role' . $role['id']]) }}
+            <span>{{ $role['name'] }}</span>
           </label>
+          <a class="tooltip" data-position="right" data-tooltip="{{ $role['tooltip'] }}">
+            <i class="material-icons grey-text">help</i>
+          </a>
         </p>
         @endforeach
       </div>

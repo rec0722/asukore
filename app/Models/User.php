@@ -93,15 +93,35 @@ class User extends Authenticatable
   public static function roleList()
   {
     $role = array(
-      '0' => '従業員',
+      [
+        'id' => '0',
+        'name' => '従業員',
+        'tooltip' => '自分が作成した日報のみ表示されます'
+      ],
       // '1' => '',
       // '2' => '',
       // '3' => '',
-      '4' => '管理職',
+      [
+        'id' => '4',
+        'name' => '管理職',
+        'tooltip' => '所属している部署の日報が表示されます'
+      ],
       // '5' => '',
       // '6' => '',
       // '7' => '',
-      '8' => '役員'
+      [
+        'id' => '8',
+        'name' => '役員',
+        'tooltip' => '閲覧権限で選択した部署の日報が表示されます'
+      ],
+      // '9' => '',
+      // '10' => '',
+      // '11' => '',
+      [
+        'id' => '12',
+        'name' => 'システム管理者',
+        'tooltip' => 'システムに関する全ての情報を設定できます'
+      ],
     );
     return $role;
   }
@@ -203,6 +223,9 @@ class User extends Authenticatable
       case '8':
         $role = "役員";
         break;
+      case '12':
+        $role = "システム管理者";
+        break;
     }
     return $role;
   }
@@ -221,6 +244,9 @@ class User extends Authenticatable
         break;
       case '8':
         $dept = "役員";
+        break;
+      case '12':
+        $dept = "システム管理者";
         break;
     }
     return $dept;

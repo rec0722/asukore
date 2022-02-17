@@ -6,6 +6,7 @@ use Laravel\Fortify\Http\Controllers\PasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 // Report
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\WeeklyReportsController;
 // Master
 use App\Http\Controllers\MstCompaniesController;
 use App\Http\Controllers\MstDeptsController;
@@ -59,6 +60,10 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::resource('report', ReportsController::class)->middleware('auth:web');
 Route::post('/report/search', [ReportsController::class, 'search'])->middleware('auth:web')->name('report.search');
 Route::post('/delete-img', [ReportsController::class, 'deleteImg'])->middleware('auth:web');
+// Weekly Report
+Route::resource('weekly-report', WeeklyReportsController::class)->middleware('auth:web');
+Route::post('/weekly-report/search', [WeeklyReportsController::class, 'search'])->middleware('auth:web')->name('weekly_report.search');
+Route::post('/read-report', [WeeklyReportsController::class, 'readReportData'])->middleware('auth:web');
 // Master
 Route::resource('mst_company', MstCompaniesController::class)->middleware('auth:web');
 Route::resource('mst_dept', MstDeptsController::class)->middleware('auth:web');

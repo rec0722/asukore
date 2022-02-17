@@ -6,16 +6,29 @@
       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="{{ route('dashboard') }}">HOME</a></li>
-        <li><a href="{{ route('report.create') }}">日報作成</a></li>
-        <li><a href="{{ route('report.index') }}">日報一覧</a></li>
+        <li>
+          <a class="dropdown-trigger" href="#" data-target="desktop-report">報告管理
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+           <!-- Dropdown Structure -->
+           <ul id="desktop-report" class="dropdown-content">
+            <li><a href="{{ route('report.create') }}">日報作成</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('report.index') }}">日報一覧</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('weekly-report.create') }}">週報作成</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('weekly-report.index') }}">週報一覧</a></li>
+          </ul><!-- /.Dropdown Structure -->
+        </li>
         <!-- Dropdown Trigger -->
         @if (Auth::user()->role > 3)
         <li>
-          <a class="dropdown-trigger" href="#" data-target="dropdown1">マスタ設定
+          <a class="dropdown-trigger" href="#" data-target="desktop-master">マスタ設定
             <i class="material-icons right">arrow_drop_down</i>
           </a>
           <!-- Dropdown Structure -->
-          <ul id="dropdown1" class="dropdown-content">
+          <ul id="desktop-master" class="dropdown-content">
             <li><a href="{{ route('mst_user.index') }}">ユーザ情報</a></li>
             <li class="divider" tabindex="-1"></li>
             <li><a href="{{ route('mst_company.index') }}">会社情報</a></li>
@@ -27,11 +40,11 @@
         </li>
         @endif
         <li>
-          <a class="dropdown-trigger" href="#" data-target="dropdown2">ユーザ情報
+          <a class="dropdown-trigger" href="#" data-target="desktop-user">ユーザ情報
             <i class="material-icons right">arrow_drop_down</i>
           </a>
           <!-- Dropdown Structure -->
-          <ul id="dropdown2" class="dropdown-content">
+          <ul id="desktop-user" class="dropdown-content">
             <li><a href="{{ route('mst_user.show', Auth::user()->id) }}">プロフィール</a></li>
             <li class="divider" tabindex="-1"></li>
             <li>
@@ -50,15 +63,28 @@
   <ul id="slide-out" class="sidenav">
     <ul id="nav-mobile">
       <li><a href="{{ route('dashboard') }}">HOME</a></li>
-      <li><a href="{{ route('report.create') }}">日報作成</a></li>
-      <li><a href="{{ route('report.index') }}">日報一覧</a></li>
+      <li>
+          <a class="dropdown-trigger" href="#" data-target="mobile-report">報告管理
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+           <!-- Dropdown Structure -->
+           <ul id="mobile-report" class="dropdown-content">
+            <li><a href="{{ route('report.create') }}">日報作成</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('report.index') }}">日報一覧</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('weekly-report.create') }}">週報作成</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{{ route('weekly-report.index') }}">週報一覧</a></li>
+          </ul><!-- /.Dropdown Structure -->
+        </li>
       <!-- Dropdown Trigger -->
       @if (Auth::user()->role > 3)
       <li>
-        <a class="dropdown-trigger" href="#" data-target="dropdown3">マスタ設定
+        <a class="dropdown-trigger" href="#" data-target="mobile-master">マスタ設定
           <i class="material-icons right">arrow_drop_down</i>
         </a>
-        <ul id="dropdown3" class="dropdown-content">
+        <ul id="mobile-master" class="dropdown-content">
           <li><a href="{{ route('mst_user.index') }}">ユーザ情報</a></li>
           <li class="divider" tabindex="-1"></li>
           <li><a href="{{ route('mst_company.index') }}">会社情報</a></li>

@@ -43,6 +43,7 @@ class MstDeptsController extends Controller
   public function create()
   {
     $list['companyList'] = MstCompany::companyList();
+    $list['editList'] = MstDept::editTiming();
     $list['rowList'] = MstDept::reportRow();
     $data = MstDept::getReportTableDefault();
 
@@ -102,6 +103,7 @@ class MstDeptsController extends Controller
     $dept = MstDept::findOrFail($id);
     MstDept::getReportTableData($dept);
     $list['companyList'] = MstCompany::companyList();
+    $list['editList'] = MstDept::editTiming();
     $list['rowList'] = MstDept::reportRow();
 
     return

@@ -23,6 +23,7 @@
         "jquery": "^3.6.0",
         "materialize-css": "^1.0.0",
         "moment": "^2.29.1",
-        "pickerjs": "^1.2.1"
+        "pickerjs": "^1.2.1",
+        "toastr": "^2.1.4"
     }
 }

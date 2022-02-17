@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\ReportAction;
-use App\Models\MstDept;
-use App\Models\User;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
-class Report extends Model
+class WeeklyReport extends Model
 {
-  use HasFactory, SoftDeletes;
+  use HasFactory;
 
   protected $dates = [
-    'report_date',
+    'report_date1',
+    'report_date2',
     'deleted_at'
   ];
 
@@ -24,7 +20,7 @@ class Report extends Model
    *
    * @var string
    */
-  protected $table = 'reports';
+  protected $table = 'weekly_reports';
 
   /**
    * The attributes that are mass assignable.
@@ -32,24 +28,18 @@ class Report extends Model
    * @var array
    */
   protected $fillable = [
-    'dept_id',
     'user_id',
-    'report_date',
-    'todays_plan',
-    'tomorrow_plan',
-    'notices'
+    'dept_id',
+    'title',
+    'report_date1',
+    'report_date2',
+    'this_week',
+    'next_week'
   ];
 
   /*
   * [Relations]------------------------------------------
   */
-  /**
-   * the reportAction related to Report
-   */
-  public function reportAction()
-  {
-    return $this->hasMany(ReportAction::class);
-  }
 
   /**
    * the User related to Report
@@ -72,6 +62,29 @@ class Report extends Model
   }
 
   /**
+   * [Select Lists]------------------------------------------
+   */
+  /**
+   * Get situation Lists
+   */
+  public static function situationList()
+  {
+    $situation = array(
+      '0' => '出勤',
+      // '1' => '',
+      // '2' => '',
+      '3' => '公休',
+      // '4' => '',
+      // '5' => '',
+      '6' => '有給',
+      // '7' => '',
+      // '8' => '',
+      '9' => '祝日',
+    );
+    return $situation;
+  }
+
+  /**
    * [Get property]------------------------------------------
    */
   /**
@@ -82,29 +95,29 @@ class Report extends Model
     $items = null;
     // 従業員の場合
     if ($user['role'] === 0) {
-      $items = Report::whereRaw(
-        'user_id = :user_id AND report_date < :report_date',
+      $items = WeeklyReport::whereRaw(
+        'user_id = :user_id AND report_date1 < :report_date1',
         [
           ':user_id' => $user['id'],
-          ':report_date' => $report['report_date']
+          ':report_date1' => $report['report_date1']
         ]
       )->orderBy('id', 'desc')->first();
       // 管理者の場合
     } elseif ($user['role'] > 3 && $user['role'] < 8) {
-      $items = Report::whereRaw(
-        'dept_id = :dept_id AND report_date = :report_date AND id < :id',
+      $items = WeeklyReport::whereRaw(
+        'dept_id = :dept_id AND report_date1 = :report_date1 AND id < :id',
         [
           ':dept_id' => $user['dept_id'],
-          ':report_date' => $report['report_date'],
+          ':report_date1' => $report['report_date1'],
           ':id' => $id
         ]
       )->orderBy('id', 'desc')->first();
       // 役員の場合
     } elseif ($user['role'] > 7) {
-      $items = Report::whereRaw(
-        'report_date = :report_date AND id < :id',
+      $items = WeeklyReport::whereRaw(
+        'report_date1 = :report_date1 AND id < :id',
         [
-          ':report_date' => $report['report_date'],
+          ':report_date1' => $report['report_date1'],
           ':id' => $id
         ]
       )->orderBy('id', 'desc')->first();
@@ -128,29 +141,29 @@ class Report extends Model
     $items = null;
     // 従業員の場合
     if ($user['role'] === 0) {
-      $items = Report::whereRaw(
-        'user_id = :user_id AND report_date > :report_date',
+      $items = WeeklyReport::whereRaw(
+        'user_id = :user_id AND report_date1 > :report_date1',
         [
           ':user_id' => $user['id'],
-          ':report_date' => $report['report_date']
+          ':report_date1' => $report['report_date1']
         ]
       )->first();
       // 管理者の場合
     } elseif ($user['role'] > 3 && $user['role'] < 8) {
-      $items = Report::whereRaw(
-        'dept_id = :dept_id AND report_date = :report_date AND id > :id',
+      $items = WeeklyReport::whereRaw(
+        'dept_id = :dept_id AND report_date1 = :report_date1 AND id > :id',
         [
           ':dept_id' => $user['dept_id'],
-          ':report_date' => $report['report_date'],
+          ':report_date1' => $report['report_date1'],
           ':id' => $id
         ]
       )->first();
       // 役員の場合
     } elseif ($user['role'] > 7) {
-      $items = Report::whereRaw(
-        'report_date = :report_date AND id > :id',
+      $items = WeeklyReport::whereRaw(
+        'report_date1 = :report_date1 AND id > :id',
         [
-          ':report_date' => $report['report_date'],
+          ':report_date1' => $report['report_date1'],
           ':id' => $id
         ]
       )->first();
@@ -164,20 +177,5 @@ class Report extends Model
     }
 
     return $next;
-  }
-
-  /**
-   * Get value as a role
-   */
-  public static function getInputType($item, $string, $user)
-  {
-    $strName = 'input_' . $string;
-    $item[$strName] = $user->$strName;
-    if ($item[$strName] === 1) {
-      $item[$string] = 'report-type-block';
-    } else {
-      $item[$string] = 'report-type-none';
-    }
-    return $item;
   }
 }

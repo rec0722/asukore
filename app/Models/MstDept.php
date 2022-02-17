@@ -81,6 +81,24 @@ class MstDept extends Model
   }
 
   /**
+   * Get edit Timing
+   */
+  public static function editTiming()
+  {
+    $rows = [
+      '0' => '当日のみ',
+      '1' => '1日前',
+      '2' => '2日前',
+      '3' => '3日前',
+      '4' => '4日前',
+      '5' => '5日前',
+      '6' => '6日前',
+      '7' => '7日前',
+    ];
+    return $rows;
+  }
+
+  /**
    * Get report Row
    */
   public static function reportRow()

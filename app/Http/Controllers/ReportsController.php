@@ -81,7 +81,7 @@ class ReportsController extends Controller
     ];
 
     return view(
-      'report.index',
+      'report_daily.index',
       compact(
         'user',
         'reports',
@@ -124,7 +124,7 @@ class ReportsController extends Controller
     } else {
       return
         view(
-          'report.create',
+          'report_daily.create',
           compact(
             'user',
             'item'
@@ -223,7 +223,7 @@ class ReportsController extends Controller
 
     return
       view(
-        'report.show',
+        'report_daily.show',
         compact(
           'id',
           'report',
@@ -264,7 +264,7 @@ class ReportsController extends Controller
 
     return
       view(
-        'report.edit',
+        'report_daily.edit',
         compact(
           'id',
           'report',
@@ -447,7 +447,7 @@ class ReportsController extends Controller
     }
 
     return view(
-      'report.index',
+      'report_daily.index',
       compact(
         'user',
         'reports',

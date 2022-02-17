@@ -1,6 +1,6 @@
 /* ===================================================================
 
- * report
+ * Daily Report
 
 =================================================================== */
 $(function() {
@@ -95,7 +95,48 @@ $(function() {
 
 /* ===================================================================
 
- * master
+ * Weekly Report
+
+=================================================================== */
+$(function() {
+    // 期間の読み込み
+    $(document).on('click', '.weeklyBtn', function(obj) {
+        let date1 = $('#date1').val();
+        let date2 = $('#date2').val();
+        console.log(date1);
+        if (date1 !== '' && date2 !== '') {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+            });
+            $.ajax({
+                    //POST通信
+                    type: 'POST',
+                    url: '/read-report',
+                    dataType: 'json',
+                    data: {
+                        date1: date1,
+                        date2: date2,
+                    },
+                })
+                //通信が成功したとき
+                .done(function(data) {
+
+                })
+                //通信が失敗したとき
+                .fail((error) => {
+                    console.log(error.statusText);
+                });
+        } else {
+            alert('期間を選択してください');
+        }
+    });
+});
+
+/* ===================================================================
+
+ * Master
 
 =================================================================== */
 $(function() {
@@ -167,7 +208,6 @@ $(function() {
         } else {
             box.css({ 'display': 'none' });
         }
-        console.log(box);
     });
 });
 
@@ -194,9 +234,12 @@ $(function() {
             months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+            weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
             weekdaysAbbrev: ['日', '月', '火', '水', '木', '金', '土']
         }
     });
+    $('.tooltip').tooltip();
+    $('.modal').modal();
 });
 
 function TimePicker() {
