@@ -16,8 +16,8 @@
     {{ Form::close() }}
 
     <div class="right-align">
-      <a href="{{ route('report.create') }}" class="btn-floating btn-large waves-effect waves-light red">
-        作成
+      <a href="{{ route($link['url'], $link['id']) }}" class="btn-floating btn-large waves-effect waves-light red">
+        {{ $link['str'] }}
       </a>
     </div>
   </section>

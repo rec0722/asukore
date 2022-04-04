@@ -5,6 +5,7 @@ use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 // Report
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\WeeklyReportsController;
 // Master
@@ -48,9 +49,7 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
   ->middleware(['guest:' . config('fortify.guard')])
   ->name('password.email');
 
-Route::middleware(['auth:web', 'verified'])->get('/', function () {
-  return view('dashboard');
-})->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->middleware('auth:web', 'verified')->name('dashboard');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
   ->middleware('auth:web')

@@ -100,27 +100,38 @@ class ReportsController extends Controller
   {
     $user = Auth::user();
     $item['dateList'] = Report::getReportDate();
-    $item['rows'] = MstDept::findOrFail($user->dept_id)->report_num;
-    $item['text1'] = MstDept::findOrFail($user->dept_id)->report_text1;
-    $item['text2'] = MstDept::findOrFail($user->dept_id)->report_text2;
-    $item['text3'] = MstDept::findOrFail($user->dept_id)->report_text3;
-    $item['text4'] = MstDept::findOrFail($user->dept_id)->report_text4;
-    $report = Report::where('user_id', $user->id)->get();
-    $userInfo = User::findOrFail($user->id);
+    $item['rows'] = MstDept::findOrFail($user['dept_id'])->report_num;
+    $item['text1'] = MstDept::findOrFail($user['dept_id'])->report_text1;
+    $item['text2'] = MstDept::findOrFail($user['dept_id'])->report_text2;
+    $item['text3'] = MstDept::findOrFail($user['dept_id'])->report_text3;
+    $item['text4'] = MstDept::findOrFail($user['dept_id'])->report_text4;
+    $userInfo = User::findOrFail($user['id']);
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
     // スマホを判定し、時間入力方式を決定
     $item['agent'] = new Agent();
+    // dateListがない場合、当日のレポートを表示
+    $report = Report::whereRaw(
+      'user_id = :user_id AND report_date = :report_date',
+      [
+        ':user_id' => $user['id'],
+        ':report_date' => date('Y-m-d'),
+      ]
+    )->first();
 
-    return
-      view(
-        'report_daily.create',
-        compact(
-          'user',
-          'item'
-        )
-      );
+    if (empty($item['dateList'])) {
+      return redirect()->route('report.edit', $report['id']);
+    } else {
+      return
+        view(
+          'report_daily.create',
+          compact(
+            'user',
+            'item'
+          )
+        );
+    }
   }
 
   /**
