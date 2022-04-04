@@ -60,7 +60,7 @@
     </div>
 
     <div class="card-action right-align">
-      @if ($report['user_id'] === Auth::user()->id && $report['report_date']->format('Y-m-d') === date('Y-m-d'))
+      @if ($report['edit'] === true)
       <a href="{{ route('report.edit', $id) }}" class="waves-effect waves-teal btn btn-floating red lighten-1">
         <i class="material-icons">edit</i>
       </a>

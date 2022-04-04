@@ -448,6 +448,11 @@ html {
         white-space: pre-wrap;
     }
     .report-table {
+        thead {
+            .flex {
+                flex-wrap: wrap;
+            }
+        }
         tbody {
             .flex {
                 flex-wrap: wrap;

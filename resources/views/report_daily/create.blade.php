@@ -16,9 +16,12 @@
 
     <!-- report Form -->
     <div class="row">
-      <div class="input-field col s12 l6">
-        {{ Form::text('report_date', date('Y年m月d日', strtotime($item['date'])), ['class' => 'validate', 'id' => 'report_date', 'disabled']) }}
+      <div class="col s12 l6">
         {{ Form::label('report_date', '報告日') }}
+        {{ Form::select('report_date', $item['dateList'], null, ['class' => 'browser-default']) }}
+        @error('report_date')
+        <span class="helper-text red-text lighten-1">{{ $message }}</span>
+        @enderror
       </div>
       <div class="input-field col s12 l6">
         {{ Form::text('user_id', $user->name, ['class' => 'validate', 'id' => 'user_id', 'disabled']) }}
@@ -69,8 +72,7 @@
         </thead>
         <tbody>
 
-          @for ($i = 0; $i < $item['rows']; $i++)
-          <tr class="flex">
+          @for ($i = 0; $i < $item['rows']; $i++) <tr class="flex">
             <td class="col-12 col-md-2 row id">
               {{ Form::hidden('action_list[' . $i . '][id]', null) }}
               <span class="col s5 input1">
@@ -117,7 +119,7 @@
       </table>
     </div>
     <div class="row {{ $item['pic'] }}" id="pic-box">
-    <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 画像報告</label>
+      <label for="todays_plan" class="red-text text-lighten-3"><i class="material-icons">create</i> 画像報告</label>
       <div class="file-field input-field">
         <div class="btn">
           <span>ファイル</span>

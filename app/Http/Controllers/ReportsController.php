@@ -99,19 +99,13 @@ class ReportsController extends Controller
   public function create()
   {
     $user = Auth::user();
-    $item['date'] = date('Y-m-d');
+    $item['dateList'] = Report::getReportDate();
     $item['rows'] = MstDept::findOrFail($user->dept_id)->report_num;
     $item['text1'] = MstDept::findOrFail($user->dept_id)->report_text1;
     $item['text2'] = MstDept::findOrFail($user->dept_id)->report_text2;
     $item['text3'] = MstDept::findOrFail($user->dept_id)->report_text3;
     $item['text4'] = MstDept::findOrFail($user->dept_id)->report_text4;
-    $report = Report::whereRaw(
-      'user_id = :user_id AND report_date = :report_date',
-      [
-        ':user_id' => $user->id,
-        ':report_date' => $item['date']
-      ]
-    )->first();
+    $report = Report::where('user_id', $user->id)->get();
     $userInfo = User::findOrFail($user->id);
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
@@ -119,23 +113,20 @@ class ReportsController extends Controller
     // スマホを判定し、時間入力方式を決定
     $item['agent'] = new Agent();
 
-    if (!is_null($report)) {
-      return redirect()->route('report.edit', $report->id);
-    } else {
-      return
-        view(
-          'report_daily.create',
-          compact(
-            'user',
-            'item'
-          )
-        );
-    }
+    return
+      view(
+        'report_daily.create',
+        compact(
+          'user',
+          'item'
+        )
+      );
   }
 
   /**
    * Store a newly created resource in storage.
    *
+   * @param  int  $id
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
@@ -149,7 +140,6 @@ class ReportsController extends Controller
         // データ整形
         $request['user_id'] = Auth::user()->id;
         $request['dept_id'] = Auth::user()->dept_id;
-        $request['report_date'] = date('Y-m-d');
         // 日報を登録
         $report = new Report;
         $report->fill($request->all())->save();
@@ -209,6 +199,7 @@ class ReportsController extends Controller
   public function show($id)
   {
     $user = Auth::user();
+    $user['edit_time'] = $user['dept']['edit_time'];
     $report = Report::findOrFail($id);
     $report['prev'] = Report::getPrev($id, $report, $user);
     $report['next'] = Report::getNext($id, $report, $user);
@@ -219,6 +210,19 @@ class ReportsController extends Controller
     $images = ReportImage::where('report_id', $id)->orderBy('sort', 'asc')->get();
     for ($i = 0; $i < count($images); $i++) {
       $images[$i]['url'] = ReportImage::getFileUrl($images[$i], $id);
+    }
+    // 編集期間の判定
+    if ($report['user_id'] === $user['id']) {
+      $date['today'] = date('Y-m-d');
+      $date['min'] = date('Y-m-d', strtotime('-' . $user['edit_time'] . 'day'));
+      $date['report'] = date('Y-m-d', strtotime($report['report_date']));
+      if ($date['min'] <= $date['report'] && $date['report'] <= $date['today']) {
+        $report['edit'] = true;
+      } else {
+        $report['edit'] = false;
+      }
+    } else {
+      $report['edit'] = false;
     }
 
     return
@@ -455,5 +459,33 @@ class ReportsController extends Controller
         'item'
       )
     );
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function getReportDate(Request $request)
+  {
+    $data['date'] = $request->date;
+    $report = Report::whereRaw(
+      'user_id = :user_id AND report_date = :report_date',
+      [
+        ':user_id' => Auth::user()->id,
+        ':report_date' =>  $data['date']
+      ]
+    )->first();
+
+    if (!is_null($report)) {
+      $data['flg'] = true;
+      $data['id'] = $report['id'];
+    } else {
+      $data['flg'] = false;
+      $data['id'] = null;
+    }
+
+    return $data;
   }
 }

@@ -4,6 +4,37 @@
 
 =================================================================== */
 $(function() {
+    // 日報作成時、日付を変更したら
+    $(document).on('change', '.report-date', function(obj) {
+        let date = obj.target.value;
+        if (date !== '') {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+            });
+            $.ajax({
+                    //POST通信
+                    type: 'POST',
+                    url: '/get-date',
+                    dataType: 'json',
+                    data: {
+                        date: date,
+                    },
+                })
+                //通信が成功したとき
+                .done(function(data) {
+                    if (data.flg === true) {
+                        window.location.href = 'create?date=' + data.date;
+                    }
+                    console.log(data);
+                })
+                //通信が失敗したとき
+                .fail((error) => {
+                    console.log(error.statusText);
+                });
+        };
+    });
     // 時間報告の行追加
     $(document).on('click', '.inputType', function(obj) {
         let itemName = obj.target.name;
@@ -226,6 +257,22 @@ $(function() {
     $('.datepicker').datepicker({
         autoClose: true,
         defaultDate: null,
+        format: 'yyyy-mm-dd',
+        firstDay: 1,
+        onSelect: true,
+        showMonthAfterYear: true,
+        i18n: {
+            months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+            weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
+            weekdaysAbbrev: ['日', '月', '火', '水', '木', '金', '土']
+        }
+    });
+    $('.report-date').datepicker({
+        autoClose: true,
+        defaultDate: new Date(),
+        maxDate: new Date(),
         format: 'yyyy-mm-dd',
         firstDay: 1,
         onSelect: true,

@@ -27,12 +27,13 @@ class MstDeptsController extends Controller
   {
     $depts = MstDept::all();
 
-    return view(
-      'mst_dept.index',
-      compact(
-        'depts',
-      )
-    );
+    return
+      view(
+        'mst_dept.index',
+        compact(
+          'depts',
+        )
+      );
   }
 
   /**

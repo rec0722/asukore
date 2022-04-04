@@ -59,6 +59,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 // Report
 Route::resource('report', ReportsController::class)->middleware('auth:web');
 Route::post('/report/search', [ReportsController::class, 'search'])->middleware('auth:web')->name('report.search');
+Route::post('/get-date', [ReportsController::class, 'getReportDate'])->middleware('auth:web');
 Route::post('/delete-img', [ReportsController::class, 'deleteImg'])->middleware('auth:web');
 // Weekly Report
 Route::resource('weekly-report', WeeklyReportsController::class)->middleware('auth:web');

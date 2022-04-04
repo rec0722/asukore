@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Report extends Model
@@ -72,6 +73,35 @@ class Report extends Model
   }
 
   /**
+   * [Select Lists]------------------------------------------
+   */
+  /**
+   * Get the Report Date Lists
+   */
+  public static function getReportDate()
+  {
+    // 編集期間を取得
+    $user = Auth::user();
+    $user['edit_time'] = $user['dept']['edit_time'];
+    // 当日をセット
+    // 編集期間中の日にちをセット
+    for ($i = 0; $i <= $user['edit_time']; $i++) {
+      $date['date'] = date('Y-m-d', strtotime('-' . $i . 'days'));
+      $date['date_str'] = date('Y年m月d日', strtotime('-' . $i . 'days'));
+      $dateList[$date['date']] = $date['date_str'];
+    }
+    // 報告済みの日付を除く
+    $report = Report::where('user_id', $user->id)->orderBy('report_date', 'desc')->limit('10')->get();
+    foreach ($report as $item) {
+      $date = date('Y-m-d', strtotime($item['report_date']));
+      if (array_key_exists($date, $dateList)) {
+        unset($dateList[$date]);
+      }
+    }
+    return $dateList;
+  }
+
+  /**
    * [Get property]------------------------------------------
    */
   /**
@@ -100,7 +130,7 @@ class Report extends Model
         ]
       )->orderBy('id', 'desc')->first();
       // 役員の場合
-    } elseif ($user['role'] > 7) {
+    } else {
       $items = Report::whereRaw(
         'report_date = :report_date AND id < :id',
         [
@@ -146,7 +176,7 @@ class Report extends Model
         ]
       )->first();
       // 役員の場合
-    } elseif ($user['role'] > 7) {
+    } else {
       $items = Report::whereRaw(
         'report_date = :report_date AND id > :id',
         [

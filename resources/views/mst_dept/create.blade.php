@@ -9,7 +9,7 @@
 </div>
 
 <!-- content -->
-<section class="content z-depth-1 h-adr">
+<section class="content z-depth-1 report">
 
   {{ Form::open(['route' => 'mst_dept.store']) }}
 
@@ -40,6 +40,7 @@
   <h2 class="headline1">日報設定</h2>
   <div class="row">
     {{ Form::label('report_table', '時間制タイトル') }}
+
     <table class="report-table">
       <tbody>
         <tr class="flex">

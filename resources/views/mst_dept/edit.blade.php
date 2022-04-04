@@ -9,7 +9,7 @@
 </div>
 
 <!-- content -->
-<section class="content z-depth-1 h-adr">
+<section class="content z-depth-1 report">
 
   {{ Form::model($dept, ['route' => ['mst_dept.update', $id], 'method' => 'PATCH']) }}
 

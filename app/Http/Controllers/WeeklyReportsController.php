@@ -424,20 +424,6 @@ class WeeklyReportsController extends Controller
   }
 
   /**
-   * Read a data between report date.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function readReportData(Request $request)
-  {
-    $reports = Report::where('id', Auth::user()->id)
-      ->whereBetween('report_date', [$request['date1'], $request['date2']])
-      ->get();
-    return $reports;
-  }
-
-  /**
    * Display a listing of the resource.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -468,7 +454,7 @@ class WeeklyReportsController extends Controller
     $matchVar = '';
     $matchParam = [];
     if (!empty($item['date1']) && !empty($item['date2'])) {
-      $var = ' AND report_date BETWEEN :report_date1 AND :report_date2 ';
+      $var = ' AND report_date1 >= :report_date1 AND report_date2 <= :report_date2 ';
       $param = [
         ':report_date1' => $item['date1'],
         ':report_date2' => $item['date2']
@@ -476,13 +462,13 @@ class WeeklyReportsController extends Controller
       $matchVar = $matchVar . $var;
       $matchParam = $matchParam + $param;
     } else if (!empty($item['date1']) && empty($item['date2'])) {
-      $var = ' AND report_date = :report_date';
-      $param = [':report_date' => $item['date1']];
+      $var = ' AND report_date1 >= :report_date1';
+      $param = [':report_date1' => $item['date1']];
       $matchVar = $matchVar . $var;
       $matchParam = $matchParam + $param;
     } else if (empty($item['date1']) && !empty($item['date2'])) {
-      $var = ' AND report_date = :report_date';
-      $param = [':report_date' => $item['date2']];
+      $var = ' AND report_date2 <= :report_date2';
+      $param = [':report_date2' => $item['date2']];
       $matchVar = $matchVar . $var;
       $matchParam = $matchParam + $param;
     }
@@ -500,13 +486,21 @@ class WeeklyReportsController extends Controller
     }
 
     // レポート一覧取得
-    if ($user['role'] === 8) {
+    if ($user['role'] === 12) {
       $var = 'id > :id';
       $param = [':id' => 0];
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = WeeklyReport::whereRaw($matchVar, $matchParam)
-        ->orderByRaw('report_date desc, dept_id desc')
+        ->orderByRaw('report_date1 desc, dept_id desc')
+        ->get();
+    } elseif ($user['role'] === 8) {
+      $var = 'id > :id';
+      $param = [':id' => 0];
+      $matchVar = $var . $matchVar;
+      $matchParam = $param + $matchParam;
+      $reports = WeeklyReport::whereRaw($matchVar, $matchParam)
+        ->orderByRaw('report_date1 desc, dept_id desc')
         ->get();
     } elseif ($user['role'] === 4) {
       $var = 'dept_id = :dept_id';
@@ -514,7 +508,7 @@ class WeeklyReportsController extends Controller
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = WeeklyReport::whereRaw($matchVar, $matchParam)
-        ->orderByRaw('report_date desc, dept_id desc')
+        ->orderByRaw('report_date1 desc, dept_id desc')
         ->get();
     } else {
       $var = 'user_id = :user_id';
@@ -522,7 +516,7 @@ class WeeklyReportsController extends Controller
       $matchVar = $var . $matchVar;
       $matchParam = $param + $matchParam;
       $reports = WeeklyReport::whereRaw($matchVar, $matchParam)
-        ->orderBy('report_date', 'desc')
+        ->orderBy('report_date1', 'desc')
         ->get();
     }
 

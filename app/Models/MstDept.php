@@ -24,6 +24,7 @@ class MstDept extends Model
   protected $fillable = [
     'company_id',
     'name',
+    'edit_time',
     'report_text1',
     'report_text2',
     'report_text3',
