@@ -25,6 +25,8 @@
       @enderror
     </div>
   </div>
+  <!-- 役員以上のみ表示 -->
+  @if ($authUser['role'] > 7)
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('company_id', '会社名') }}
@@ -49,9 +51,6 @@
       </div>
     </div>
   </div>
-
-  <!-- 管理者のみ表示 -->
-  @if ($user['role'] > 7)
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('role', '役職') }}
@@ -67,6 +66,7 @@
       </div>
     </div>
   </div>
+  @if ($user['role'] > 7)
   <div class="row">
     <div class="col s12 l6">
       {{ Form::label('dept', '閲覧権限') }}
@@ -86,7 +86,10 @@
       </div>
     </div>
   </div>
+  @endif
   @else
+    {{ Form::hidden('company_id', $user['company_id']) }}
+    {{ Form::hidden('dept_id', $user['dept_id']) }}
     {{ Form::hidden('role', null) }}
   @endif
   <div class="row">

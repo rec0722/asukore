@@ -53,33 +53,41 @@ class MstCompany extends Model
    * [Select Lists]------------------------------------------
    */
   /**
-   * Get the company Lists
+   * Get company Lists
    */
-  public static function companyList()
+  public static function selectCompanyList()
   {
     $companies = MstCompany::get();
-    $companyList = array(
-      '' => '▼ 選択してください'
-    );
-    foreach ($companies as $com) {
-      $var = array($com->id => $com->name);
-      $companyList = $companyList + $var;
-    }
+    $companyList = MstCompany::arrayCompanyList($companies, 1);
     return $companyList;
   }
 
   /**
    * Get the company Lists
    */
-  public static function companyEmployList($user)
+  public static function selectEmployList($user)
   {
-    $companies = MstCompany::where('id', $user['company_id'])->get();
-    $companyList = array(
-      '' => '▼ 選択してください'
-    );
-    foreach ($companies as $com) {
-      $var = array($com->id => $com->name);
-      $companyList = $companyList + $var;
+    if ($user['role'] > 7) {
+      $companies = MstCompany::get();
+    } else {
+      $companies = MstCompany::where('dept_id', $user['dept_id'])->get();
+    }
+    $companyList = MstCompany::arrayCompanyList($companies, 2);
+    return $companyList;
+  }
+
+  /**
+   * created Option Lists
+   */
+  public static function arrayCompanyList($data, $type)
+  {
+    if ($type === 1) {
+      $companyList = ['' => '▼ 選択してください'];
+    } else {
+      $companyList = ['' => ''];
+    }
+    foreach ($data as $item) {
+      $companyList[$item['id']] = $item['name'];
     }
     return $companyList;
   }
@@ -90,12 +98,9 @@ class MstCompany extends Model
   public static function prefectureList()
   {
     $prefs = MstPrefecture::get();
-    $prefList = array(
-      '' => '▼ 選択してください'
-    );
+    $prefList = ['' => '▼ 選択してください'];
     foreach ($prefs as $pref) {
-      $var = array($pref->id => $pref->name);
-      $prefList = $prefList + $var;
+      $prefList[$pref['id']] = $pref['name'];
     }
     return $prefList;
   }

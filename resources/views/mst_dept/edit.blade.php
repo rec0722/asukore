@@ -9,7 +9,7 @@
 </div>
 
 <!-- content -->
-<section class="content z-depth-1 h-adr">
+<section class="content z-depth-1 report">
 
   {{ Form::model($dept, ['route' => ['mst_dept.update', $id], 'method' => 'PATCH']) }}
 
@@ -39,6 +39,13 @@
   <div class="divider"></div>
   <h2 class="headline1">日報設定</h2>
   <div class="row">
+    {{ Form::label('edit_time', '過去の編集期間') }}
+    {{ Form::select('edit_time',  $list['editList'], null, ['class' => 'browser-default']) }}
+    <div class="input-field col s12 l6">
+      <span class="helper-text">※日報を編集できる期間を設定してください</span>
+    </div>
+  </div>
+  <div class="row">
     {{ Form::label('report_table', '時間制タイトル') }}
     <table class="report-table">
       <tbody>
@@ -63,7 +70,7 @@
     {{ Form::label('report_num', '報告行数') }}
     {{ Form::select('report_num',  $list['rowList'], null, ['class' => 'browser-default']) }}
     <div class="input-field col s12 l6">
-      <span class="helper-text">※時間単位の報告の行数を設定してください</span>
+      <span class="helper-text">※デフォルトで表示する時間制の報告行数を設定してください</span>
     </div>
   </div>
   <!-- /.dept Form -->

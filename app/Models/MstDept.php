@@ -24,6 +24,7 @@ class MstDept extends Model
   protected $fillable = [
     'company_id',
     'name',
+    'edit_time',
     'report_text1',
     'report_text2',
     'report_text3',
@@ -49,35 +50,54 @@ class MstDept extends Model
    * [Select Lists]------------------------------------------
    */
   /**
-   * Get the depture Lists
+   * Get the depture Lists - MstUser create
    */
-  public static function deptSelectList()
+  public static function selectDeptList($user, $sql, $type)
   {
-    $depts = MstDept::get();
-    $deptList = array(
-      '' => ''
-    );
-    foreach ($depts as $dept) {
-      $var = array($dept->id => $dept->name);
-      $deptList = $deptList + $var;
+    if ($user['role'] >= 8 && $sql === 'all') {
+      $depts = MstDept::get();
+    } elseif ($user['role'] >= 8 && $sql === 'spec') {
+      $userDept = UserDept::select('dept_id')->where('user_id', $user['id'])->get()->toArray();
+      $depts = MstDept::whereIn('id', $userDept)->get();
+    }else {
+      $depts = MstDept::where('company_id', $user['company_id'])->get();
+    }
+    $deptList = MstDept::arrayDeptList($depts, $type);
+    return $deptList;
+  }
+
+  /**
+   * created Option Lists
+   */
+  public static function arrayDeptList($data, $type)
+  {
+    if ($type === 1) {
+      $deptList = ['' => ''];
+    } else {
+      $deptList = [];
+    }
+    foreach ($data as $item) {
+      $deptList[$item['id']] = $item['name'];
     }
     return $deptList;
   }
 
   /**
-   * Get the depture Lists
+   * Get edit Timing
    */
-  public static function deptSelectEmployList($user)
+  public static function editTiming()
   {
-    $depts = MstDept::where('company_id', $user['company_id'])->get();
-    $deptList = array(
-      '' => ''
-    );
-    foreach ($depts as $dept) {
-      $var = array($dept->id => $dept->name);
-      $deptList = $deptList + $var;
-    }
-    return $deptList;
+    $rows = [
+      '0' => '当日のみ',
+      '1' => '1日前',
+      '2' => '2日前',
+      '3' => '3日前',
+      '4' => '4日前',
+      '5' => '5日前',
+      '6' => '6日前',
+      '7' => '7日前',
+    ];
+    return $rows;
   }
 
   /**
@@ -106,32 +126,10 @@ class MstDept extends Model
   /**
    * Get the depture Lists - create
    */
-  public static function deptCreateCheckList()
+  public static function checkDeptList()
   {
     $depts = MstDept::all();
-    $deptList = array();
-    foreach ($depts as $dept) {
-      $var = array($dept->id => $dept->name);
-      $deptList = $deptList + $var;
-    }
-    return $deptList;
-  }
-
-  /**
-   * Get the depture Lists - edit
-   */
-  public static function deptCheckList($user)
-  {
-    if (!is_null($user['group'])) {
-      $depts = MstDept::whereIn('company_id', $user['group'])->get();
-    } else {
-      $depts = MstDept::where('company_id', $user['company_id'])->get();
-    }
-    $deptList = array();
-    foreach ($depts as $dept) {
-      $var = array($dept->id => $dept->name);
-      $deptList = $deptList + $var;
-    }
+    $deptList = MstDept::arrayDeptList($depts, 2);
     return $deptList;
   }
 

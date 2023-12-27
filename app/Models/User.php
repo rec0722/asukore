@@ -85,6 +85,35 @@ class User extends Authenticatable
   }
 
   /**
+   * [Index Lists]------------------------------------------
+   */
+  public static function indexUserList($auth)
+  {
+     // ユーザ一覧取得
+     if ($auth['role'] === 12) {
+      // システム管理者
+      $userList = User::orderByRaw('role desc, dept_id desc, id asc')->paginate(15);
+    } elseif ($auth['role'] === 8) {
+      // 役員
+      $userDept = User::arrayUserDeptList($auth['id']);
+      $userList = User::where('role', '<=', '8')->whereIn('dept_id', $userDept)->orderByRaw('role desc, dept_id desc, id asc')->paginate(15);
+    } elseif ($auth['role'] === 4) {
+      // 管理者
+      $userList = User::whereRaw(
+        'dept_id = :dept_id AND role <= :role',
+        [
+          'dept_id' => $auth['dept_id'],
+          'role' => 4,
+        ]
+      )->orderByRaw('role desc, id asc')->paginate(15);
+    } else {
+      // 従業員
+      $userList = User::where('id', $auth['id'])->paginate(1);
+    }
+    return $userList;
+  }
+
+  /**
    * [Select Lists]------------------------------------------
    */
   /**
@@ -101,43 +130,34 @@ class User extends Authenticatable
       // '5' => '',
       // '6' => '',
       // '7' => '',
-      '8' => '役員'
+      '8' => '役員',
+      // '9' => '',
+      // '10' => '',
+      // '11' => '',
+      '12' => 'システム管理者',
+
     );
     return $role;
   }
 
   /**
-   * Get the user Lists
+   * Get employ Lists
    */
-  public static function userSelectList()
+  public static function selectUserList($user)
   {
-    $users = User::get();
-    $userList = array(
-      '' => ''
-    );
-    foreach ($users as $user) {
-      $var = array($user->id => $user->name);
-      $userList = $userList + $var;
-    }
-    return $userList;
-  }
-
-  /**
-   * Get the user employ Lists
-   */
-  public static function userSelectEmployList($user)
-  {
-    if ($user['role'] > 3) {
+    if ($user['role'] === 12) {
+      $users = User::get();
+    } elseif ($user['role'] === 8) {
+      $userDept = UserDept::select('dept_id')->where('user_id', $user['id'])->get()->toArray();
+      $users = User::whereIn('dept_id', $userDept)->get();
+    } elseif ($user['role'] === 4) {
       $users = User::where('dept_id', $user['dept_id'])->get();
     } else {
       $users = User::where('id', $user['id'])->get();
     }
-    $userList = array(
-      '' => ''
-    );
+    $userList = ['' => ''];
     foreach ($users as $user) {
-      $var = array($user->id => $user->name);
-      $userList = $userList + $var;
+      $userList[$user['id']] = $user['name'];
     }
     return $userList;
   }
@@ -148,7 +168,7 @@ class User extends Authenticatable
   /**
    * Get the company Lists
    */
-  public static function getCompanyArray($id)
+  public static function arrayUserDeptList($id)
   {
     $depts = UserDept::where('user_id', $id)->get()->toArray();
     $deptList = [];
@@ -203,6 +223,9 @@ class User extends Authenticatable
       case '8':
         $role = "役員";
         break;
+      case '12':
+        $role = "システム管理者";
+        break;
     }
     return $role;
   }
@@ -221,6 +244,9 @@ class User extends Authenticatable
         break;
       case '8':
         $dept = "役員";
+        break;
+      case '12':
+        $role = "システム管理者";
         break;
     }
     return $dept;

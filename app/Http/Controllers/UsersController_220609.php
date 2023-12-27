@@ -9,7 +9,6 @@ use App\Models\MstCompanyGroup;
 use App\Models\MstDept;
 use App\Models\Report;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -25,20 +24,6 @@ class UsersController extends Controller
   public function __construct()
   {
     $this->middleware('auth:web');
-
-    $this->middleware(function ($request, $next) {
-      $id = $request->route()->mst_user;
-      $authUser = Auth::user();
-      if (!is_null($id)) {
-        $user = User::findOrFail($id);
-        if ($authUser['role'] === 4 && ($authUser['dept_id'] !== $user['dept_id'])) {
-          abort(404);
-        } else if ($authUser['role'] === 0 && ($authUser['id'] !== $user['id'])) {
-          abort(404);
-        }
-      }
-      return $next($request);
-    });
   }
 
   /**
@@ -48,8 +33,7 @@ class UsersController extends Controller
    */
   public function index()
   {
-    $authUser = Auth::user();
-    $users = User::indexUserList($authUser);
+    $users = User::all();
     for ($i = 0; $i < count($users); $i++) {
       $users[$i]['role'] = User::getRole($users[$i]['role']);
     }
@@ -58,7 +42,6 @@ class UsersController extends Controller
       'mst_user.index',
       compact(
         'users',
-        'authUser'
       )
     );
   }
@@ -70,14 +53,9 @@ class UsersController extends Controller
    */
   public function create()
   {
-    // 役員以外の場合、404表示
-    $authUser = Auth::user();
-    if ($authUser['role'] < 8) {
-      return redirect()->route('mst_user.index');
-    }
-    $user['companyList'] = MstCompany::selectCompanyList();
-    $user['deptSelect'] = MstDept::selectDeptList($authUser, 'all', 1);
-    $user['deptCheck'] = MstDept::checkDeptList();
+    $user['companyList'] = MstCompany::companyList();
+    $user['deptSelect'] = MstDept::deptSelectList();
+    $user['deptCheck'] = MstDept::deptCreateCheckList($user);
     $user['role'] = '0';
     $user['roleList'] = User::roleList();
 
@@ -180,7 +158,6 @@ class UsersController extends Controller
    */
   public function edit($id)
   {
-    $authUser = Auth::user();
     $user = User::findOrFail($id);
     $userDept = UserDept::select('dept_id')->where('user_id', $id)->get()->toArray();
     $group = MstCompanyGroup::where('company_id', $user['company_id'])->first();
@@ -189,9 +166,13 @@ class UsersController extends Controller
     } else {
       $user['group'] = null;
     }
-    $user['companyList'] = MstCompany::selectCompanyList();
-    $user['deptSelect'] = MstDept::selectDeptList($user, 'only', 2);
-    $user['deptCheck'] = MstDept::checkDeptList();
+    if ($user['role'] > 7) {
+      $user['companyList'] = MstCompany::companyList();
+    } else {
+      $user['companyList'] = MstCompany::companyEmployList($user);
+    }
+    $user['deptSelect'] = MstDept::deptSelectEmployList($user);
+    $user['deptCheck'] = MstDept::deptCheckList($user);
     $user['roleList'] = User::roleList();
 
     return view(
@@ -199,8 +180,7 @@ class UsersController extends Controller
       compact(
         'id',
         'user',
-        'userDept',
-        'authUser'
+        'userDept'
       )
     );
   }
@@ -312,10 +292,6 @@ class UsersController extends Controller
    */
   public function trash()
   {
-    // 役員以外の場合、404表示
-    if (Auth::user()->role < 8) {
-      return redirect()->route('mst_user.index');
-    }
     $users = User::onlyTrashed()->whereNotNull('id')->get();
 
     return view(
@@ -341,7 +317,7 @@ class UsersController extends Controller
       ->route('mst_user.index');
   }
 
-  /**
+   /**
    * Remove the specified resource from storage.
    *
    * @param  int  $id

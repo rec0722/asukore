@@ -91,6 +91,11 @@ $(function() {
                 });
         };
     });
+    // 検索画面で入力項目のリセット
+    $('.resetBtn').click(function() {
+        $('.datepicker').val('');
+        $('.browser-default').find('option:selected').prop('selected', false);
+    });
 });
 
 /* ===================================================================

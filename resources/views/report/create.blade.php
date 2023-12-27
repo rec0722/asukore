@@ -16,9 +16,12 @@
 
     <!-- report Form -->
     <div class="row">
-      <div class="input-field col s12 l6">
-        {{ Form::text('report_date', date('Y年m月d日', strtotime($item['date'])), ['class' => 'validate', 'id' => 'report_date', 'disabled']) }}
+      <div class="col s12 l6">
         {{ Form::label('report_date', '報告日') }}
+        {{ Form::select('report_date', $item['dateList'], null, ['class' => 'browser-default']) }}
+        @error('report_date')
+        <span class="helper-text red-text lighten-1">{{ $message }}</span>
+        @enderror
       </div>
       <div class="input-field col s12 l6">
         {{ Form::text('user_id', $user->name, ['class' => 'validate', 'id' => 'user_id', 'disabled']) }}
@@ -75,17 +78,17 @@
               {{ Form::hidden('action_list[' . $i . '][id]', null) }}
               <span class="col s5 input1">
                 @if ($item['agent']->isMobile())
-                {{ Form::text('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => 'js-time-picker', 'id' => 'time1_' . $i]) }}
+                {{ Form::text('action_list[' . $i . '][time1]', null, ['class' => 'js-time-picker', 'id' => 'time1_' . $i]) }}
                 @else
-                {{ Form::time('action_list[' . $i . '][time1]', $actions[$i]['time1'], ['class' => '', 'id' => 'time1_' . $i]) }}
+                {{ Form::time('action_list[' . $i . '][time1]', null, ['class' => '', 'id' => 'time1_' . $i]) }}
                 @endif
               </span>
               <label class="col s2">〜</label>
               <span class="col s5 input2">
                 @if ($item['agent']->isMobile())
-                {{ Form::text('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => 'js-time-picker', 'id' => 'time2_' . $i]) }}
+                {{ Form::text('action_list[' . $i . '][time2]', null, ['class' => 'js-time-picker', 'id' => 'time2_' . $i]) }}
                 @else
-                {{ Form::time('action_list[' . $i . '][time2]', $actions[$i]['time2'], ['class' => '', 'id' => 'time2_' . $i]) }}
+                {{ Form::time('action_list[' . $i . '][time2]', null, ['class' => '', 'id' => 'time2_' . $i]) }}
                 @endif
               </span>
             </td>

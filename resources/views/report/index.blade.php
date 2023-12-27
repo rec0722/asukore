@@ -12,7 +12,7 @@
 <section class="content z-depth-1">
 
   <!-- search Box -->
-  {{ Form::open(['route' => 'report.search']) }}
+  {{ Form::open(['route' => 'report.search', 'id' => 'reportForm']) }}
   <div class="search-box flex">
     <div class="col-12 col-md-4">
       {{ Form::label('search', '日付検索') }}
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="col-12 col-md-3">
-      @if ($user['role'] === 8)
+      @if ($user['role'] >= 8)
       {{ Form::label('search', '部署検索') }}
       {{ Form::select('search[dept]', $search['deptSelect'], $item['dept'], ['class' => 'browser-default']) }}
       @else
@@ -35,7 +35,7 @@
       @endif
     </div>
     <div class="col-12 col-md-3">
-      @if ($user['role'] === 8)
+      @if ($user['role'] >= 4)
       {{ Form::label('search', '社員検索') }}
       {{ Form::select('search[employ]', $search['userSelect'], $item['employ'], ['class' => 'browser-default']) }}
       @else
@@ -44,6 +44,7 @@
     </div>
     <div class="col-12 col-md-2 search-btn">
       {{ Form::button('検 索', ['class' => 'waves-effect waves-light btn', 'type' => 'submit']) }}
+      {{ Form::button('クリア', ['class' => 'waves-effect waves-light btn grey resetBtn', 'type' => 'clear']) }}
     </div>
   </div>
   {{ Form::close() }}
@@ -75,6 +76,8 @@
     </tbody>
   </table>
   <!-- /.Report List -->
+
+  {{ $reports->links('components/pagination') }}
 
   <div>
     {{ link_to_route('report.create', ' 新規追加 ', null, ['class' => 'wave-effect wave-light btn']) }}

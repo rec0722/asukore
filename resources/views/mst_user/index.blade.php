@@ -45,6 +45,9 @@
   </table>
   <!-- /.Company List -->
 
+  {{ $users->links('components/pagination') }}
+
+  @if ($authUser['role'] > 7)
   <div class="row">
     <div class="col s6">
       {{ link_to_route('mst_user.create', ' 新規追加 ', null, ['class' => 'wave-effect wave-light btn']) }}
@@ -53,6 +56,7 @@
       {{ link_to_route('mst_user.trash', ' ゴミ箱 ', null, ['class' => 'wave-effect wave-light btn grey']) }}
     </div>
   </div>
+  @endif
 
 </section>
 <!-- /.content -->

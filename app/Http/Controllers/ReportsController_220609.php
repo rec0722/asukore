@@ -55,19 +55,29 @@ class ReportsController extends Controller
   {
     // 権限別のselectを取得
     $user = Auth::user();
-    // 検索項目を取得
-    $search['deptSelect'] = MstDept::selectDeptList($user, 'spec', 1);
-    $search['userSelect'] = User::selectUserList($user);
-    // sessionを保有しているか確認
-    $session = Report::getSessionData();
+    if ($user['role'] === 8) {
+      $search['deptSelect'] = MstDept::deptSelectList();
+      $search['userSelect'] = User::userSelectList();
+    } else {
+      $search['deptSelect'] = MstDept::deptSelectEmployList($user);
+      $search['userSelect'] = User::userSelectEmployList($user);
+    }
     // レポート一覧取得
-    $reports = Report::indexReportList($user, $session);
+    if ($user['role'] === 8) {
+      $depts = User::getCompanyArray($user['id']);
+      //$reports = Report::orderByRaw('report_date desc, dept_id desc')->get();
+      $reports = Report::whereIn('dept_id', $depts)->orderBy('report_date', 'desc')->get();
+    } elseif ($user['role'] === 4) {
+      $reports = Report::where('dept_id', $user['dept_id'])->orderByRaw('report_date desc, dept_id desc')->get();
+    } else {
+      $reports = Report::where('user_id', $user['id'])->orderBy('report_date', 'desc')->get();
+    }
     // 検索
     $item = [
-      'date1' => $session['date1'],
-      'date2' => $session['date2'],
-      'dept' => $session['dept'],
-      'employ' => $session['employ']
+      'date1' => '',
+      'date2' => '',
+      'dept' => '',
+      'employ' => ''
     ];
 
     return view(
@@ -89,32 +99,29 @@ class ReportsController extends Controller
   public function create()
   {
     $user = Auth::user();
-    $item['dateList'] = Report::getReportDate();
+    $item['date'] = date('Y-m-d');
     $item['rows'] = MstDept::findOrFail($user->dept_id)->report_num;
     $item['text1'] = MstDept::findOrFail($user->dept_id)->report_text1;
     $item['text2'] = MstDept::findOrFail($user->dept_id)->report_text2;
     $item['text3'] = MstDept::findOrFail($user->dept_id)->report_text3;
     $item['text4'] = MstDept::findOrFail($user->dept_id)->report_text4;
+    $report = Report::whereRaw(
+      'user_id = :user_id AND report_date = :report_date',
+      [
+        ':user_id' => $user->id,
+        ':report_date' => $item['date']
+      ]
+    )->first();
     $userInfo = User::findOrFail($user->id);
     $item = Report::getInputType($item, 'free', $userInfo);
     $item = Report::getInputType($item, 'time', $userInfo);
     $item = Report::getInputType($item, 'pic', $userInfo);
     // スマホを判定し、時間入力方式を決定
     $item['agent'] = new Agent();
-    // dateListがない場合、当日のレポートを表示
-    if (empty($item['dateList'])) {
-      // 当日のレポートを編集
-      $report = Report::whereRaw(
-        'user_id = :user_id AND report_date = :report_date',
-        [
-          ':user_id' => $user['id'],
-          ':report_date' => date('Y-m-d'),
-        ]
-      )->first();
 
-      return redirect()->route('report.edit', $report['id']);
+    if (!is_null($report)) {
+      return redirect()->route('report.edit', $report->id);
     } else {
-      // 新規の日報作成画面を表示
       return
         view(
           'report.create',
@@ -142,18 +149,9 @@ class ReportsController extends Controller
         // データ整形
         $request['user_id'] = Auth::user()->id;
         $request['dept_id'] = Auth::user()->dept_id;
-        // 別タブで開いている等、既存データがないか確認
-        $matchThese = 'user_id = :user_id AND dept_id = :dept_id AND report_date = :report_date';
-        $matchParam = [
-          ':user_id' => $request['user_id'],
-          ':dept_id' => $request['dept_id'],
-          ':report_date' => $request['report_date'],
-        ];
-        $report = Report::whereRaw($matchThese, $matchParam)->first();
-        // 日報が空の場合、新しいデータを登録
-        if (empty($report)) {
-          $report = new Report;
-        }
+        $request['report_date'] = date('Y-m-d');
+        // 日報を登録
+        $report = new Report;
         $report->fill($request->all())->save();
         $id = $report->id;
         // 時間別の作業内容を登録
@@ -210,11 +208,10 @@ class ReportsController extends Controller
    */
   public function show($id)
   {
-    $authUser = Auth::user();
-    $authUser['edit_time'] = $authUser['dept']['edit_time'];
+    $user = Auth::user();
     $report = Report::findOrFail($id);
-    $report['prev'] = Report::getPrev($id, $report, $authUser);
-    $report['next'] = Report::getNext($id, $report, $authUser);
+    $report['prev'] = Report::getPrev($id, $report, $user);
+    $report['next'] = Report::getNext($id, $report, $user);
     $actions = ReportAction::where('report_id', $id)->orderBy('id', 'asc')->get();
     for ($i = 0; $i < count($actions); $i++) {
       $actions[$i]['time'] = ReportAction::getActionTime($actions[$i]);
@@ -222,19 +219,6 @@ class ReportsController extends Controller
     $images = ReportImage::where('report_id', $id)->orderBy('sort', 'asc')->get();
     for ($i = 0; $i < count($images); $i++) {
       $images[$i]['url'] = ReportImage::getFileUrl($images[$i], $id);
-    }
-    // 編集期間の判定
-    if ($report['user_id'] === $authUser['id']) {
-      $date['today'] = date('Y-m-d');
-      $date['min'] = date('Y-m-d', strtotime('-' . $authUser['edit_time'] . 'day'));
-      $date['report'] = date('Y-m-d', strtotime($report['report_date']));
-      if ($date['min'] <= $date['report'] && $date['report'] <= $date['today']) {
-        $report['edit'] = true;
-      } else {
-        $report['edit'] = false;
-      }
-    } else {
-      $report['edit'] = false;
     }
 
     return
@@ -389,15 +373,87 @@ class ReportsController extends Controller
       'employ' => $request->search['employ'],
     ];
 
-    // sessionを保存
-    $sessionData = [
-      'date1' => $request->search['date1'],
-      'date2' => $request->search['date2'],
-      'dept' => $request->search['dept'],
-      'employ' => $request->search['employ'],
-    ];
-    $request->session()->put($sessionData);
+    // 権限別のselectを取得
+    $user = Auth::user();
+    if ($user['role'] > 7) {
+      $search['deptSelect'] = MstDept::deptSelectList();
+      $search['userSelect'] = User::userSelectList();
+    } else {
+      $search['deptSelect'] = MstDept::deptSelectEmployList($user);
+      $search['userSelect'] = User::userSelectEmployList($user);
+    }
 
-    return redirect()->route('report.index');
+    // 検索項目で検索結果を変更
+    $match = [];
+    $matchVar = '';
+    $matchParam = [];
+    if (!empty($item['date1']) && !empty($item['date2'])) {
+      $var = ' AND report_date BETWEEN :report_date1 AND :report_date2 ';
+      $param = [
+        ':report_date1' => $item['date1'],
+        ':report_date2' => $item['date2']
+      ];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    } else if (!empty($item['date1']) && empty($item['date2'])) {
+      $var = ' AND report_date = :report_date';
+      $param = [':report_date' => $item['date1']];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    } else if (empty($item['date1']) && !empty($item['date2'])) {
+      $var = ' AND report_date = :report_date';
+      $param = [':report_date' => $item['date2']];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    }
+    if (!empty($item['dept'])) {
+      $var = ' AND dept_id = :dept_id';
+      $param = [':dept_id' => $item['dept']];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    }
+    if (!empty($item['employ'])) {
+      $var = ' AND user_id = :user_id';
+      $param = [':user_id' => $item['employ']];
+      $matchVar = $matchVar . $var;
+      $matchParam = $matchParam + $param;
+    }
+
+    // レポート一覧取得
+    if ($user['role'] === 8) {
+      $var = 'id > :id';
+      $param = [':id' => 0];
+      $matchVar = $var . $matchVar;
+      $matchParam = $param + $matchParam;
+      $reports = Report::whereRaw($matchVar, $matchParam)
+        ->orderByRaw('report_date desc, dept_id desc')
+        ->get();
+    } elseif ($user['role'] === 4) {
+      $var = 'dept_id = :dept_id';
+      $param = [':dept_id' => $user['dept_id']];
+      $matchVar = $var . $matchVar;
+      $matchParam = $param + $matchParam;
+      $reports = Report::whereRaw($matchVar, $matchParam)
+        ->orderByRaw('report_date desc, dept_id desc')
+        ->get();
+    } else {
+      $var = 'user_id = :user_id';
+      $param = [':user_id' => $user['id']];
+      $matchVar = $var . $matchVar;
+      $matchParam = $param + $matchParam;
+      $reports = Report::whereRaw($matchVar, $matchParam)
+        ->orderBy('report_date', 'desc')
+        ->get();
+    }
+
+    return view(
+      'report.index',
+      compact(
+        'user',
+        'reports',
+        'search',
+        'item'
+      )
+    );
   }
 }
